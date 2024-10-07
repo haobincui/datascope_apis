@@ -1,0 +1,22 @@
+import pandas as pd
+import requests
+
+
+# url = 'https://developers.refinitiv.com/bin/devportal/ricdata?query=gbp&filter=OTC%20Interest%20Rate%20Derivatives&top=59909'
+# headers = {
+#     'authority': 'developers.refinitiv.com',
+#     'Cookie': '_ga_047QF1WZXF=GS1.3.1694433465.7.1.1694433838.0.0.0; _gat_devPortal=1; AWSALB=Ba/Df3YNbDDL+SIVa7j5kZmuYGvuqj3/70L5lfOs+g9RvcaCexQJl/zh2BLj/kdthH5L+kFWO4HLExeozvY3upanhocrCkuysN7PCzQoBrp+NJGt1yUf31I8A2NG; AWSALBCORS=Ba/Df3YNbDDL+SIVa7j5kZmuYGvuqj3/70L5lfOs+g9RvcaCexQJl/zh2BLj/kdthH5L+kFWO4HLExeozvY3upanhocrCkuysN7PCzQoBrp+NJGt1yUf31I8A2NG; gpv_url=https://developers.refinitiv.com/en/tools-catalog/ric-search; r_gpv_pn=ric-search:ric%20search:developer-portal:global:en; _ga_H3SHBV77E6=GS1.1.1694433463.12.1.1694433598.0.0.0; s_cc=true; _ga=GA1.3.1972565719.1673977773; _ga_9NLKMEKGLM=GS1.3.1694433465.6.1.1694433522.3.0.0; _ga_PVBWSDTKTC=GS1.3.1694433465.10.1.1694433522.0.0.0; _gid=GA1.3.789336829.1694433465; s_fid=65F66BF8FD266D91-3CE0DB58C3434BEE; OptanonConsent=isGpcEnabled=0&datestamp=Mon+Sep+11+2023+12%3A58%3A41+GMT%2B0100+(%E8%8B%B1%E5%9B%BD%E5%A4%8F%E4%BB%A4%E6%97%B6%E9%97%B4)&version=202304.1.0&isIABGlobal=false&hosts=&consentId=4c873133-f058-4d3f-9fae-f1ef8a3955b3&interactionCount=1&landingPath=NotLandingPage&groups=C0001%3A1%2CC0002%3A1%2CC0003%3A1%2CC0004%3A1&geolocation=GB%3BENG&AwaitingReconsent=false&browserGpcFlag=0; _gac_UA-124681740-19=1.1691841487.CjwKCAjw29ymBhAKEiwAHJbJ8gODOCa9Lh9lCQuMNenqgP-YggLedPwlvZnyvCl3cBAmNTewXa4PlhoC9qIQAvD_BwE; _ga=GA1.1.1972565719.1673977773; mbox=PC#1ffc40952ee24b2e81dd0de04599d0a7.37_0#1757515913|session#f106636a81234227acd214b387823b6d#1694435381; filterUrl=/en/tools-catalog/ric-search; sourceSystem=Devportal; tr_ewp_tracking_params={}; s_plt=%5B%5BB%5D%5D; s_pltp=%5B%5BB%5D%5D; s_ips=704; s_plt=0.70; s_pltp=en_us:devportal%20home%20page:developer-portal:global:en; s_ppv=en_us%253Adevportal%2520home%2520page%253Adeveloper-portal%253Aglobal%253Aen%2C20%2C20%2C704%2C1%2C4; s_tp=3502; isAuthenticated=true; logid=6123; userRole=registered,; isValidtokenId=true; login-token=login%3aeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJoYW9iaW5jdWkxOTk1QDE2My5jb20iLCJleHAiOjE2OTQ0NzY3MTAsImlhdCI6MTY5NDQzMzUxMCwic2NvcGUiOiJsb2dpbiJ9.rgEZSJEupiVUFfwa6kduqi_W57U4ZR80sFXc26VBOac%3acrx.default; tokenId=eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJVQVQiLCJpYXQiOjE2OTQ0MzM1MTAsImlzcyI6IlJlZmluaXRpdiIsInN1Yl9uYW1lIjoiTkEiLCJzdWJfZW1haWwiOiJoYW9iaW5jdWkxOTk1QDE2My5jb20iLCJzdWJfc2VhbWxlc3MiOiJOQSIsInN1Yl9wcm92aWRlci1uYW1lIjoiUmVmaW5pdGl2IiwiZXhwIjoxNjk0NTE5OTEwfQ.pZW--j1lJ92oH4_-GYs2GdQKbwzncl5iNVpQw4WAGiw; AMCV_3E1F57795B977DEB0A495EEA%40AdobeOrg=1176715910%7CMCIDTS%7C19612%7CMCMID%7C01018375518819275960515783723525883666%7CMCAAMLH-1695038263%7C6%7CMCAAMB-1695038263%7C6G1ynYcLPuiQxYZrsz_pkqfLG9yMXBpb2zX5dvJdYQJzPXImdj0y%7CMCOPTOUT-1694440663s%7CNONE%7CMCSYNCSOP%7C411-19616%7CvVersion%7C5.4.0; _ga_CP26WQB4KG=GS1.1.1694433250.4.0.1694433250.60.0.0; OptanonConsent=isGpcEnabled=0&datestamp=Sat+Sep+09+2023+15%3A51%3A51+GMT%2B0100+(%E8%8B%B1%E5%9B%BD%E5%A4%8F%E4%BB%A4%E6%97%B6%E9%97%B4)&version=6.34.0&isIABGlobal=false&hosts=&consentId=4c873133-f058-4d3f-9fae-f1ef8a3955b3&interactionCount=1&landingPath=NotLandingPage&groups=C0001%3A1%2CC0002%3A1%2CC0003%3A1%2CC0004%3A1&geolocation=GB%3BENG&AwaitingReconsent=false; _ga_PVBWSDTKTC=GS1.1.1694270097.9.1.1694271111.0.0.0; _gcl_au=1.1.1280895449.1694270098; _gcl_aw=GCL.1691841487.CjwKCAjw29ymBhAKEiwAHJbJ8gODOCa9Lh9lCQuMNenqgP-YggLedPwlvZnyvCl3cBAmNTewXa4PlhoC9qIQAvD_BwE; _gcl_dc=GCL.1691841487.CjwKCAjw29ymBhAKEiwAHJbJ8gODOCa9Lh9lCQuMNenqgP-YggLedPwlvZnyvCl3cBAmNTewXa4PlhoC9qIQAvD_BwE; _uetvid=0086a5209bf511ed8d2d3340ff9d85c6; adcloud={%22_les_v%22:%22y%2Crefinitiv.com%2C1694272911%22}; at_check=true; _ga_047QF1WZXF=GS1.2.1694270635.6.1.1694270670.0.0.0; ELOQUA=GUID=A71A6EB575704157892BF955EFABABF8; _ga_QL6395P4RG=GS1.1.1692714785.2.0.1692714785.0.0.0; AMCVS_3E1F57795B977DEB0A495EEA%40AdobeOrg=1; _ga_0R90P6P7SL=GS1.1.1691842359.1.1.1691842373.0.0.0; _ga_7SF54D2HNZ=GS1.2.1691842360.1.0.1691842360.60.0.0; _cls_s=d35a65f5-037b-4e24-bd52-9d417b5d351c:1; _ga_4HLWHNLJSZ=GS1.1.1685628596.2.0.1685628596.0.0.0; _cls_v=7e3fbef0-1bac-468a-adee-321c8a736a5e; __qca=P0-1146468417-1674405667586; OptanonAlertBoxClosed=2023-01-22T16:41:05.067Z'
+# }
+#
+# request = requests.get(url, headers=headers)
+
+
+# res = request.json()
+
+res = pd.read_json(path_or_buf='output/response.json')
+
+res.to_csv('./merged_output/response.csv')
+
+
+
+

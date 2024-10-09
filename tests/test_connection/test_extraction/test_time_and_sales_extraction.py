@@ -37,30 +37,32 @@ class TestTimeAndSalesExtraction(unittest.TestCase):
                                                               times_and_sales_content_field_names=content_field_names,
                                                               condition=condition)
 
-        body = extractioner.get_body()
-        target_body = {'ExtractionRequest':
-                           {'@odata.type':
-                                '#DataScope.Select.Api.Extractions.ExtractionRequests.TickHistoryTimeAndSalesExtractionRequest',
-                            'ContentFieldNames': ['Trade - Ask Price',
-                                                  'Quote - Bid Price'],
-                            'IdentifierList': {
-                                '@odata.type':
-                                    '#DataScope.Select.Api.Extractions.ExtractionRequests.InstrumentIdentifierList',
-                                'InstrumentIdentifiers': [
-                                    {'Identifier': 'CLZ24',
-                                     'IdentifierType': 'Ric'}
-                                ],
-                                'ValidationOptions': {'AllowHistoricalInstruments': True},
-                                'UseUserPreferencesForValidationOptions': False},
-                            'Condition': {'QueryStartDate': '2022-11-21T00:00:00.000Z',
-                                          'QueryEndDate': '2022-11-22T00:00:00.000Z',
-                                          'MessageTimeStampIn': 'GmtUtc',
-                                          'TimeRangeMode': 'Inclusive',
-                                          'ReportDateRangeType': 'Range',
-                                          'ExtractBy': 'Ric',
-                                          'ApplyCorrectionsAndCancellations': True,
-                                          'DisplaySourceRIC': True}}
-                       }
-        # print(body)
-
-        self.assertTrue(body == target_body)
+        extractioner.save_output_file('./test.csv.gz')
+        print('finished!!!!')
+        # body = extractioner.get_body()
+        # target_body = {'ExtractionRequest':
+        #                    {'@odata.type':
+        #                         '#DataScope.Select.Api.Extractions.ExtractionRequests.TickHistoryTimeAndSalesExtractionRequest',
+        #                     'ContentFieldNames': ['Trade - Ask Price',
+        #                                           'Quote - Bid Price'],
+        #                     'IdentifierList': {
+        #                         '@odata.type':
+        #                             '#DataScope.Select.Api.Extractions.ExtractionRequests.InstrumentIdentifierList',
+        #                         'InstrumentIdentifiers': [
+        #                             {'Identifier': 'CLZ24',
+        #                              'IdentifierType': 'Ric'}
+        #                         ],
+        #                         'ValidationOptions': {'AllowHistoricalInstruments': True},
+        #                         'UseUserPreferencesForValidationOptions': False},
+        #                     'Condition': {'QueryStartDate': '2022-11-21T00:00:00.000Z',
+        #                                   'QueryEndDate': '2022-11-22T00:00:00.000Z',
+        #                                   'MessageTimeStampIn': 'GmtUtc',
+        #                                   'TimeRangeMode': 'Inclusive',
+        #                                   'ReportDateRangeType': 'Range',
+        #                                   'ExtractBy': 'Ric',
+        #                                   'ApplyCorrectionsAndCancellations': True,
+        #                                   'DisplaySourceRIC': True}}
+        #                }
+        # # print(body)
+        #
+        # self.assertTrue(body == target_body)

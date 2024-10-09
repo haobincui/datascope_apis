@@ -1,9 +1,9 @@
 from typing import List
 
-from connection.client import _get_token
-from connection.features.extraction.on_demand_extractioner.on_demand_extractioner import OnDemandExtractioner
-from src.multi_thread import MultiThreadsImp
-from src.multi_thread import MultiThreads
+from src.connection.client import _get_token
+from src.connection.features.extraction.on_demand_extractioner.on_demand_extractioner import OnDemandExtractioner
+from src.multi_thread.implement.multi_threads_imp import MultiThreadsImp
+from src.multi_thread.multi_threads import MultiThreads
 
 
 class ExtractionImp(MultiThreadsImp):

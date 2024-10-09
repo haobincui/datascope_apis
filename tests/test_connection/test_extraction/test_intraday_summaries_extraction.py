@@ -40,3 +40,4 @@ class TestIntradaySummariesExtraction(unittest.TestCase):
                                                                 condition=condition)
         body = extractioner.get_body()
 
+

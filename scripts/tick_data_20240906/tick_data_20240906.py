@@ -4,19 +4,22 @@ import os
 import sys
 from datetime import date
 
+from src.calendar.schedule import plus_period, EomConvention, TimeUnit, Period
+from src.multi_thread.implement.extraction_imp import ExtractionImp
+
 BASE_DIR = os.path.abspath(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
 sys.path.insert(0, '/home/haobin_cui/option_data_processor')
 # sys.path.insert(0, '/Users/haobincui/Documents/option_data_processor')
 
 
-from connection.apis.extraction_creator import ExtractionCreator
+from src.connection.apis.extraction_creator import ExtractionCreator
 
-from connection.features.extraction.enums.content_field_names.tick_history.time_and_sales_content_field_names import \
+from src.connection.features.extraction.enums.content_field_names.tick_history.time_and_sales_content_field_names import \
     TimeAndSalesContentFieldNames
-from connection.features.extraction.enums.extraction_base_enums import IdentifierType
-from src.multi_thread import ExtractionImp
-from src.calendar import plus_period, Period, TimeUnit, EomConvention
+from src.connection.features.extraction.enums.extraction_base_enums import IdentifierType
+
+
 
 # %% setup a logger:
 logging.basicConfig(level=logging.DEBUG,

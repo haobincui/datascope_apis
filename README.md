@@ -3,7 +3,7 @@
 ## development environment
 python 3.8
 
-```
+```bash
 conda create -n py38 python=3.8
 conda activate py38
 conda install requests scipy python-dateutil pandas==1.5.2 numpy==1.23.5

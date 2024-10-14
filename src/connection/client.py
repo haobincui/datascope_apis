@@ -50,11 +50,20 @@ def _get_token() -> str:
         }
     }
     auth = requests.post(request_token_url, json=request_body)
-    try:
-        _token = auth.json()['value']
-        return _token
-    except:
-        raise ValueError('failed to login')
+    if auth.status_code == 401:
+        raise ValueError('Failed to login: [401 Unauthorized]')
+    elif auth.status_code != 200:
+        raise ValueError(f'Failed to login: [{auth.status_code}], [{auth.json()}]')
+    _token = auth.json()['Token']
+    return _token
+
+def process_invalidate_token(token) -> str:
+    # 401 Unauthorized
+    global _token
+    if token == _token:
+        _token = _get_token()
+    return _token
+
 
 
 def search(search_type: Union[SearchTypes, GetTypes, HistoricalSearchTypes], body: dict, max_page_size=5, token=None):
@@ -71,8 +80,13 @@ def search(search_type: Union[SearchTypes, GetTypes, HistoricalSearchTypes], bod
     else:
         raise Exception(f'Unsupport search types {search_type.__class__.name}')
     if 'error' in r:
-        raise Exception(f"Failed to search {search_type.name} [{r['error']['message']}]")
-    return r['value']
+        raise Exception(f"Failed to search {search_type.name}: [{r['error']['message']}]")
+    if r.status_code == 200:
+        return r['value']
+    elif r.status_code == 401:
+        return search(search_type, body, max_page_size, process_invalidate_token(token))
+    else:
+        raise Exception(f"Failed to search {search_type.name}: [{r['error']['message']}]")
 
 
 def get_search_dictionaries(search_dictionary: SearchDictionary, max_page_size=5, token=None):
@@ -86,7 +100,13 @@ def get_search_dictionaries(search_dictionary: SearchDictionary, max_page_size=5
     r = requests.get(url, json=body, headers=headers).json()
     if 'error' in r:
         raise Exception(f'Failed to get {search_dictionary.name}')
-    return r['value']
+    if r.status_code == 200:
+        return r['value']
+    elif r.status_code == 401:
+        return get_search_dictionaries(search_dictionary, max_page_size, process_invalidate_token(token))
+    else:
+        raise Exception(f"Failed to get search: [{r['error']['message']}]")
+
 
 
 def post_extractions_request(extraction_type: ExtractionTypes, body: dict, token=None):
@@ -102,6 +122,10 @@ def post_extractions_request(extraction_type: ExtractionTypes, body: dict, token
     }
     logging.debug('Start sending extraction request')
     r = requests.post(url, json=body, headers=headers)
+
+    if r.status_code == 401:
+        logging.debug('Token expired, re-login')
+        return post_extractions_request(extraction_type, body, process_invalidate_token(token))
 
     if r.status_code == 202:
         location = r.headers['location']
@@ -132,6 +156,9 @@ def get_job_id_by_location(location: str, token=None):
     }
     logging.debug('Start getting the Job Id')
     r = requests.get(url, headers=headers)
+    if r.status_code == 401:
+        logging.debug('Token expired, re-login')
+        return get_job_id_by_location(location, process_invalidate_token(token))
     if r.status_code == 200:
         res = r.json()
         job_id = res['JobId']
@@ -187,6 +214,10 @@ def get_extraction_data_by_job_id(extraction_type: ExtractionTypes, job_id: str,
     }
 
     r = requests.get(url, headers=headers)
+    if r.status_code == 401:
+        logging.debug('Token expired, re-login')
+        return get_extraction_data_by_job_id(extraction_type, job_id, process_invalidate_token(token))
+
     if r.status_code == 200:
         res = r.text  # str form, need to convert to dataframe
         return res
@@ -228,6 +259,9 @@ def get_extraction_file_by_job_id(extraction_type: ExtractionTypes, job_id: str,
 
     logging.info('Start downloading the file ')
     r = requests.get(url, headers=headers, stream=True)
+    if r.status_code == 401:
+        logging.debug('Token expired, re-login')
+        return get_extraction_file_by_job_id(extraction_type, job_id, output_file_path, process_invalidate_token(token))
     logging.debug('Successfully get the file, start saving')
     file_dir = os.path.dirname(output_file_path)
     try:
@@ -270,6 +304,9 @@ def get_extraction_file_by_file_id(extraction_file_id: str, output_file_path: st
         pass
 
     with urllib.request.urlopen(url_obj) as response:
+        if response.getcode() == 401:
+            logging.debug('Token expired, re-login')
+            return get_extraction_file_by_file_id(extraction_file_id, output_file_path, process_invalidate_token(token))
         compressed_file = io.BytesIO(response.read())
         with open(output_file_path, 'wb') as outfile:
             outfile.write(compressed_file.read())
@@ -311,6 +348,9 @@ def get_data_file_id_by_job_id(job_id: str, token=None):
         'Prefer': 'respond-async,wait=2'  # async wait time, default = 30
     }
     r = requests.get(url, headers=headers)
+    if r.status_code == 401:
+        logging.debug('Token expired, re-login')
+        return get_data_file_id_by_job_id(job_id, process_invalidate_token(token))
     if r.ok:
         res = r.json()
         return res['value'][-1]['FileId']

@@ -26,6 +26,7 @@ class Config:
         self.auth_base_url = self.base_url + conf['auth'].get('service', 'Authentication')
         # self.auth_url = self.auth_base_url + 'users/login'
         self.request_token_url = self.auth_base_url + '/RequestToken'
+        self.validate_token_url = self.auth_base_url + '/ValidateToken'
         self.auth_username = conf['auth'].get('username')
         self.auth_password = conf['auth'].get('password')
         self.search_url = self.base_url + 'Search/'

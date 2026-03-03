@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
-from datetime import datetime, date
+from datetime import date, datetime
 from typing import Union
 
-from connection.utils.camparsions.comparison_operator import ComparisonOperator
+from .comparison_operator import ComparisonOperator
 
 _odata_type = '@odata.type'
 _value = 'Value'

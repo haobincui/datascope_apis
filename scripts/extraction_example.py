@@ -59,13 +59,8 @@ extractioners = [extractioner1, extractioner2]
 
 output_files = ['./testdata1.csv.gz', './testdata2.csv.gz']
 
-threads = ExtractionImp(extractioners=extractioners)
-threads.save_files(output_files)
 
 
-
-
-# extractioner1.save_output_file('./testdata.csv.gz')
 
 
 print('finished!!!')

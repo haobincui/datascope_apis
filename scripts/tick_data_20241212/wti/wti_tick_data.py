@@ -25,7 +25,7 @@ from src.connection.features.extraction.enums.extraction_base_enums import Ident
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 
-output_path = 'output'
+output_path = 'ff_output'
 
 """
 Instruction:

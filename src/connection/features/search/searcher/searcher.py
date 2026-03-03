@@ -23,22 +23,21 @@ class Searcher(Feature):
         """
         Serilalize dict to json
         """
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     def get_table_result(self) -> pd.DataFrame:
         """
         return a dataframe for data analysis
         """
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     def get_dict_result(self) -> dict:
         """
         de-Serialize Json to Obj
         """
-        raise NotImplemented
-
+        raise NotImplementedError
 
 
 

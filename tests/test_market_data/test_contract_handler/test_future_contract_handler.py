@@ -138,3 +138,5 @@ class TestFutureContractHandler(unittest.TestCase):
                                       date(2020, 12, 16)]
         for i, j in zip(contract_maturities, target_contract_maturities):
             self.assertTrue(i == j)
+
+

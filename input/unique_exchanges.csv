@@ -1,0 +1,44 @@
+Exchange RIC,Exchange Name,Exchange Code
+DE,Xetra,GER
+xbo,MiFID - Reuters Consolidated (Frankfurt),XBO
+F,Frankfurt Stock Exchange,FRA
+BE,Berlin Stock Exchange,BER
+SG,Stuttgart Stock Exchange,STU
+MU,Munich Stock Exchange,MUN
+D,Dusseldorf Stock Exchange,DUS
+H,Hamburg Stock Exchange,HAM
+PK,USA Pink Sheets,PNK
+MI,Milan Stock Exchange,MIL
+HA,Hanover Stock Exchange,HAN
+CHI,CHI-X Europe,CHI
+BS,BATS Europe,BTE
+TQ,Turquoise,TRQ
+MX,Bolsa Mexicana de Valores S.A. de C.V.,MEX
+ED,Equiduct,EQD
+SIG,MTF Sigma-X Dark Pool,SIG
+BX,The Bucharest Stock Exchange,BUH
+VI,Vienna Stock Exchange - Cash Market,VIE
+BN,Berne Stock Exchange,BRN
+WA,Warsaw Stock Exchange,WSE
+BB,Bulgarian Stock Exchange - Sofia,BLG
+BU,Budapest Stock Exchange,BUD
+xt,MiFID - Cross Market Data Service,XDS
+L,London Stock Exchange,LSE
+TRE,London Stock Exchange,LSE
+S,Swiss Exchange,SWX
+TG,Tradegate AG,TDG
+DEU,German Composite,DEU
+BIV,Bolsa Institucional de Valores,BIV
+TX,EuroTLX,ETX
+AQX,AQUIS MTF,AQX
+MCO,CONSOLIDATED MEXICAN EXCHANGES,MXQ
+PA,Paris Stock Exchange,PAR
+AS,Euronext Amsterdam,AEX
+VX,SWX Europe PLC,VTX
+PAp,EuroNext,PAR
+DEp,Xetra,GER
+MIp,Milan Stock Exchange,MIL
+SGp,Stuttgart Stock Exchange,STU
+STp,OMX Nordic Exchange Stockholm AB - cash,STO
+PZ,Aquis Stock Exchange,AQS
+MB,BOAT,BDS

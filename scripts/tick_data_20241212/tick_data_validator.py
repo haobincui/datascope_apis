@@ -40,14 +40,14 @@ target_files = []
 for content in contents:
     for contract_id in contract_ids:
         for idx in range(len(query_start_dates)):
-            cur_file = BASE_DIR + '/output/' + content + '/' + contract_id + '/' + contract_id + '_' + content + '_' + \
+            cur_file = BASE_DIR + '/ff_output/' + content + '/' + contract_id + '/' + contract_id + '_' + content + '_' + \
                        query_start_dates[idx].isoformat() + '.csv.gz'
             target_files.append(cur_file)
 
 all_downloaded_files = []
 for content in contents:
     for contract_id in contract_ids:
-        path = os.path.join(f'{BASE_DIR}/output/{content}/{contract_id}', '*.csv.gz')
+        path = os.path.join(f'{BASE_DIR}/ff_output/{content}/{contract_id}', '*.csv.gz')
         downloaded_files = glob.glob(path)
         all_downloaded_files.extend(downloaded_files)
 

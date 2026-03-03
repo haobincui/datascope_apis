@@ -1,22 +1,20 @@
 from typing import List
 
-from src.connection.features.extraction.enums.content_field_names.tick_history.market_depth_content_field_name import \
-    MarketDepthContentFieldNames
+from src.connection.features.extraction.enums.content_field_names.tick_history.market_depth_content_field_name import MarketDepthContentFieldNames
 from src.connection.features.extraction.enums.extraction_types import ExtractionTypes
 from src.connection.features.extraction.enums.required_extraction_data_types import RequiredExtractionDataTypes
-from src.connection.features.extraction.on_demand_extractioner.on_demand_extractioner import OnDemandExtractioner
+from src.connection.features.extraction.on_demand_extractor.on_demand_extractor import OnDemandExtractioner
 from src.connection.utils.condition.tick_history_market_depth_condition import TickHistoryMarketDepthCondition
-from src.connection.utils.instrument_identifier_list_base.instrument_identifier_list_base import \
-    InstrumentIdentifierListBase
+from src.connection.utils.instrument_identifier_list_base.instrument_identifier_list_base import InstrumentIdentifierListBase
 
 
 class TickHistoryMarketDepthExtractioner(OnDemandExtractioner):
     def __init__(
-            self,
-            identifier_list: InstrumentIdentifierListBase,
-            market_depth_content_field_names: List[MarketDepthContentFieldNames],
-            condition: TickHistoryMarketDepthCondition,
-            extraction_type: ExtractionTypes = ExtractionTypes.ExtractRaw
+        self,
+        identifier_list: InstrumentIdentifierListBase,
+        market_depth_content_field_names: List[MarketDepthContentFieldNames],
+        condition: TickHistoryMarketDepthCondition,
+        extraction_type: ExtractionTypes = ExtractionTypes.ExtractRaw,
     ):
         super().__init__()
         self.condition = condition

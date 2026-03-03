@@ -1,7 +1,7 @@
 from typing import List
 
 from src.connection.client import _get_token
-from src.connection.features.extraction.on_demand_extractioner.on_demand_extractioner import OnDemandExtractioner
+from src.connection.features.extraction.on_demand_extractor.on_demand_extractor import OnDemandExtractioner
 from src.multi_thread.implement.multi_threads_imp import MultiThreadsImp
 from src.multi_thread.multi_threads import MultiThreads
 
@@ -13,7 +13,7 @@ class ExtractionImp(MultiThreadsImp):
         self.nums_of_threads = len(extractioners)
 
     def get_locations(self, token=None):
-        token = token if token else _get_token()
+        token = _get_token() if token is None else token
 
         funcs = [extractioner.get_location for extractioner in self.extractioners]
         threads = MultiThreads(funcs=funcs, nums_of_thread=self.nums_of_threads)
@@ -24,7 +24,7 @@ class ExtractionImp(MultiThreadsImp):
         return locations
 
     def get_job_ids(self, token=None):
-        token = token if token else _get_token()
+        token = _get_token() if token is None else token
 
         funcs = [extractioner.get_job_id for extractioner in self.extractioners]
         threads = MultiThreads(funcs=funcs, nums_of_thread=self.nums_of_threads)
@@ -34,7 +34,7 @@ class ExtractionImp(MultiThreadsImp):
         return job_ids
 
     def get_bodys(self, token=None):
-        token = token if token else _get_token()
+        token = _get_token() if token is None else token
 
         funcs = [extractioner.get_body for extractioner in self.extractioners]
         threads = MultiThreads(funcs=funcs, nums_of_thread=self.nums_of_threads)
@@ -45,7 +45,7 @@ class ExtractionImp(MultiThreadsImp):
         return bodys
 
     def save_files(self, output_file_names: List[str], token=None):
-        token = token if token else _get_token()
+        token = _get_token() if token is None else token
         funcs = [extractioner.save_output_file for extractioner in self.extractioners]
         threads = MultiThreads(funcs=funcs, nums_of_thread=self.nums_of_threads)
         funcs_inputs = [(name, token) for name in output_file_names]
@@ -54,6 +54,4 @@ class ExtractionImp(MultiThreadsImp):
         files_dir = [extractioner.output_file_path for extractioner in self.extractioners]
 
         return files_dir
-
-
 

@@ -4,15 +4,16 @@ from abc import ABC, abstractmethod
 
 import pandas as pd
 
-from src.connection.client import get_extraction_file_by_job_id, get_job_id_by_location, post_extractions_request, \
-    get_extraction_data_by_job_id
+from src.connection.client import get_extraction_data_by_job_id, get_extraction_file_by_job_id, get_job_id_by_location, post_extractions_request
 from src.connection.features.extraction.enums.extraction_types import ExtractionTypes
+from src.error.error import ExtractionError
 
 
 class OnDemandExtractioner(ABC):
     """
-    abstract class for on demand extractioner
+    Abstract class for on-demand extractors.
     """
+
     _IdentifierList = 'IdentifierList'
     _Condition = 'Condition'
     _UseUserPreferencesForValidationOptions = 'UseUserPreferencesForValidationOptions'
@@ -30,7 +31,7 @@ class OnDemandExtractioner(ABC):
 
     @abstractmethod
     def get_body(self) -> dict:
-        raise NotImplemented
+        raise NotImplementedError
 
     def get_location(self, token=None) -> str:
         if self.location:
@@ -56,20 +57,16 @@ class OnDemandExtractioner(ABC):
 
     def save_output_file(self, output_file_path: str, token=None) -> bool:
         """
-        Save the .gz file to local
-        :param output_file_path: Output file name need to end with .csv.gz
-        :param token:
-        :return: True is saved successfully
+        Save the .gz file to local.
         """
         job_id = self.job_id if self.job_id else self.get_job_id(token)
 
-        logging.info(f'Successfully get the job id, Start download the file')
+        logging.info('Successfully get the job id, Start download the file')
 
         res = get_extraction_file_by_job_id(self.extraction_type, job_id, output_file_path, token)
         if res:
             if os.path.getsize(output_file_path) == 0:
-                raise ValueError(f'No file found: [{output_file_path}]')
-                # print(f'No file found: [{output_file_path}]')
+                raise ExtractionError(message=f'No file found: [{output_file_path}]')
 
         self.output_file_path = os.path.abspath(output_file_path)
         logging.info(f'Successfully saved file {output_file_path}')
@@ -80,8 +77,7 @@ class OnDemandExtractioner(ABC):
     def get_output_file_dir(self) -> str:
         if self.output_file_path:
             return self.output_file_path
-        else:
-            return 'Output File Not Found'
+        return 'Output File Not Found'
 
     def get_text_results(self, token=None) -> str:
         body = self.body if self.body else self.get_body()
@@ -91,11 +87,10 @@ class OnDemandExtractioner(ABC):
         return text_result
 
     def get_json_results(self, token=None) -> str:
-        raise NotImplemented
+        raise NotImplementedError
 
     def get_dataframe_results(self) -> pd.DataFrame:
-        res = pd.read_csv(self.output_file_path if self.output_file_path else self.get_output_file_dir(), compression='gzip')
-
-        # dict_res = self.get_text_results(token=token)
-        # data_form_converter = DataTypeConverter().from_text_to_dataframe
-        return res
+        return pd.read_csv(
+            self.output_file_path if self.output_file_path else self.get_output_file_dir(),
+            compression='gzip',
+        )

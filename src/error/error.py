@@ -1,93 +1,87 @@
-from dataclasses import dataclass
+from typing import Any, Dict, Mapping, Optional
 
 
-#
-@dataclass()
-class ConnectionError(Exception):
-    id = 'Connection Error'
-    message: str = ''
+class ProjectError(Exception):
+    """Base error for this project with optional structured details."""
+
+    default_id = 'Project Error'
+
+    def __init__(self, message: str = '', *, details: Optional[Mapping[str, Any]] = None):
+        self.message = message
+        self.details: Dict[str, Any] = dict(details) if details else {}
+        super().__init__(message)
+
+    @property
+    def id(self) -> str:
+        return self.default_id
+
+    def __str__(self) -> str:
+        base = self.message or self.id
+        if self.details:
+            return f'{base} | details={self.details}'
+        return base
 
 
-@dataclass()
-class InputDataError(Exception):
-    id = 'Input Data Error'
-    message: str = ''
+class ConnectionError(ProjectError):
+    default_id = 'Connection Error'
 
 
-class DataScopeError(Exception):
-    pass
+class InputDataError(ProjectError):
+    default_id = 'Input Data Error'
 
 
-@dataclass()
-class ExtractionError(DataScopeError):
-    id = 'Extraction Error'
-    message: str = ''
+class DataScopeError(ProjectError):
+    default_id = 'DataScope Error'
 
 
-@dataclass()
-class SearchError(DataScopeError):
-    id = 'Search Error'
-    message: str = ''
+class DataScopeAuthError(DataScopeError):
+    default_id = 'DataScope Auth Error'
 
 
-@dataclass()
 class DataScopeInputError(DataScopeError):
-    id = 'DataScope Input Error'
-    message: str = ''
+    default_id = 'DataScope Input Error'
 
 
-@dataclass()
-class ThreadError(Exception):
-    id = 'Thread Error'
-    message: str = ''
+class SearchError(DataScopeError):
+    default_id = 'Search Error'
 
 
-class QuantLibError(Exception):
-    pass
+class ExtractionError(DataScopeError):
+    default_id = 'Extraction Error'
 
 
-@dataclass()
+class ThreadError(ProjectError):
+    default_id = 'Thread Error'
+
+
+class QuantLibError(ProjectError):
+    default_id = 'QuantLib Error'
+
+
 class CalendarError(QuantLibError):
-    id = 'Calendar Error'
-    message: str = ''
+    default_id = 'Calendar Error'
 
 
-@dataclass()
 class DateTimeError(QuantLibError):
-    id = 'DateTime Error'
-    message: str = ''
+    default_id = 'DateTime Error'
 
 
-@dataclass()
 class PricingError(QuantLibError):
-    id = 'Pricing Error'
-    message: str = ''
+    default_id = 'Pricing Error'
 
 
-class DataScopeError(Exception):
-    pass
-
-class DataScopeInputError(DataScopeError):
-    pass
-
-class ExtractionError(DataScopeError):
-    pass
-
-class SearchError(DataScopeError):
-    pass
-
-class ThreadError(Exception):
-    pass
-
-class QuantLibError(Exception):
-    pass
-pass
-
-class CalendarError(QuantLibError):
-    pass
-
-
-
-
-
-
+__all__ = [
+    'ProjectError',
+    'ConnectionError',
+    'InputDataError',
+    'DataScopeError',
+    'DataScopeAuthError',
+    'DataScopeInputError',
+    'SearchError',
+    'ExtractionError',
+    'ThreadError',
+    'QuantLibError',
+    'CalendarError',
+    'DateTimeError',
+    'PricingError',
+]

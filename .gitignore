@@ -145,3 +145,7 @@ scripts/**/wti_output/
 # Legacy generated data directories
 scripts/data_to_distribution/input/
 scripts/data_to_distribution/output/
+
+# 
+*output
+

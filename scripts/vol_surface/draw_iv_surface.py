@@ -240,7 +240,7 @@ if __name__ == '__main__':
         future_output_file = './output/future/'
         output_vol_file = './output/vol/'
         output_file = output_file + input_file.split('/')[-1].split('.csv.gz')[0] + '_option.csv'
-        output_files.append(output_file.replace('input', 'output'))
+        output_files.append(output_file.replace('input', 'ff_output'))
         future_output_file = future_output_file + input_file.split('/')[-1].split('.csv.gz')[0] + '_future.csv'
         future_output_files.append(future_output_file)
         get_option_data_from_raw_data(input_file, output_file, future_output_file)

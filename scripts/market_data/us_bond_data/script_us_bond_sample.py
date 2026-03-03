@@ -5,7 +5,7 @@ from connection.apis.extraction_creator import ExtractionCreator
 from connection.features.extraction.enums.content_field_names.tick_history.intraday_content_field_names import \
     IntradaySummariesContentFieldNames
 from connection.features.extraction.enums.extraction_base_enums import IdentifierType
-from connection.features.extraction.on_demand_extractioner.tick_history_time_and_sales_extractioner import \
+from connection.features.extraction.on_demand_extractor.tick_history_time_and_sales_extractor import \
     TickHistoryTimeAndSalesRawExtractioner
 from connection.utils.condition.condition import TickHistorySummaryInterval
 

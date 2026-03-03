@@ -1,5 +1,5 @@
 from src.connection.features.search.enums import IdentifierType
-from connection.features.search.searcher.funtures_and_options_searcher import FuturesAndOptionSearcher
+from connection.features.search.searcher.futures_and_options_searcher import FuturesAndOptionSearcher
 
 # exchange_codes = ['IMM']
 identifier_type = IdentifierType.Ric

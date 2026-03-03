@@ -5,9 +5,9 @@ from datetime import date
 from connection.features.extraction.enums.content_field_names.tick_history.time_and_sales_content_field_names import \
     TimeAndSalesContentFieldNames
 from connection.features.extraction.enums.extraction_base_enums import IdentifierType
-from connection.features.extraction.on_demand_extractioner.tick_history_time_and_sales_extractioner import \
+from connection.features.extraction.on_demand_extractor.tick_history_time_and_sales_extractor import \
     TickHistoryTimeAndSalesRawExtractioner
-from connection.utils.condition.tick_history_time_and_sales_condtion import TickHistoryTimeAndSalesCondition
+from connection.utils.condition.tick_history_time_and_sales_condition import TickHistoryTimeAndSalesCondition
 from connection.utils.instrument_identifier_list_base.instrument_identifier_list import InstrumentIdentifier, \
     InstrumentIdentifierList
 from src.multi_thread import ExtractionImp
@@ -94,7 +94,7 @@ for i in range(0, chunks):
         cur_id = id + '-' + start_dates[idx].isoformat() + '-' + end_dates[idx].isoformat()
         cur_ids.append(cur_id)
         chunk_extraction.append(extractioner)
-        output_path.append(f'./output/{id}_trades/{start_dates[idx].year}/{cur_id}.csv.gz')
+        output_path.append(f'./ff_output/{id}_trades/{start_dates[idx].year}/{cur_id}.csv.gz')
         try:
             os.mkdir(f'./output/{id}_trades/{start_dates[idx].year}/')
         except:

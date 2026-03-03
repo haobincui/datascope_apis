@@ -16,10 +16,10 @@ import threading
 from connection.features.extraction.enums.content_field_names.tick_history.time_and_sales_content_field_names import \
     TimeAndSalesContentFieldNames
 from connection.features.extraction.enums.extraction_base_enums import IdentifierType
-from connection.features.extraction.on_demand_extractioner.tick_history_time_and_sales_extractioner import \
+from connection.features.extraction.on_demand_extractor.tick_history_time_and_sales_extractor import \
     TickHistoryTimeAndSalesRawExtractioner
 from connection.utils.condition.condition import TickHistoryTimeOptions
-from connection.utils.condition.tick_history_time_and_sales_condtion import TickHistoryTimeAndSalesCondition
+from connection.utils.condition.tick_history_time_and_sales_condition import TickHistoryTimeAndSalesCondition
 from connection.utils.instrument_identifier_list_base.instrument_identifier_list import InstrumentIdentifier, \
     InstrumentIdentifierList
 
@@ -72,7 +72,7 @@ def process_timestamp(input_file: str):
     
     # raw_data = raw_data.groupby(by='RIC').drop_duplicates(['Date'], keep='first').ungroup()
     raw_data = raw_data.drop_duplicates(subset=['RIC', 'Date'], keep='first')
-    raw_data.to_csv('./output/merged_data.csv')
+    raw_data.to_csv('./ff_output/merged_data.csv')
     return raw_data
 
 

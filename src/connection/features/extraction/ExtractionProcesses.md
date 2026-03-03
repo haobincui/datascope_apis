@@ -22,7 +22,7 @@ Note left of Local: Local User
 
 body: 
 ```python
-from connection.features.extraction.on_demand_extractioner.on_demand_extractioner import OnDemandExtractioner
+from connection.features.extraction.on_demand_extractor.on_demand_extractor import OnDemandExtractioner
 type(body) = OnDemandExtractioner()
 
 ```

@@ -1,0 +1,50 @@
+RIC,Company Common Name,Exchange Name,Exchange Code,ISIN
+ALVG.DE,Allianz SE,Xetra,GER,{'DE0008404005'}
+ALVGEUR.xbo,Allianz SE,MiFID - Reuters Consolidated (Frankfurt),XBO,{'DE0008404005'}
+ALVG.F,Allianz SE,Frankfurt Stock Exchange,FRA,{'DE0008404005'}
+ALVG.BE,Allianz SE,Berlin Stock Exchange,BER,{'DE0008404005'}
+ALVG.SG,Allianz SE,Stuttgart Stock Exchange,STU,{'DE0008404005'}
+ALVG.MU,Allianz SE,Munich Stock Exchange,MUN,{'DE0008404005'}
+ALVG.D,Allianz SE,Dusseldorf Stock Exchange,DUS,{'DE0008404005'}
+ALVG.H,Allianz SE,Hamburg Stock Exchange,HAM,{'DE0008404005'}
+ALIZF.PK,Allianz SE,USA Pink Sheets,PNK,{'DE0008404005'}
+ALV.MI,Allianz SE,Milan Stock Exchange,MIL,{'DE0008404005'}
+ALVG.HA,Allianz SE,Hanover Stock Exchange,HAN,{'DE0008404005'}
+ALVd.CHI,Allianz SE,CHI-X Europe,CHI,{'DE0008404005'}
+ALVd.BS,Allianz SE,BATS Europe,BTE,{'DE0008404005'}
+ALVd.TQ,Allianz SE,Turquoise,TRQ,{'DE0008404005'}
+ALVN.MX,Allianz SE,Bolsa Mexicana de Valores S.A. de C.V.,MEX,{'DE0008404005'}
+ALVd.ED,Allianz SE,Equiduct,EQD,{'DE0008404005'}
+ALVd.SIG,Allianz SE,MTF Sigma-X Dark Pool,SIG,{'DE0008404005'}
+ALVG.BX,Allianz SE,The Bucharest Stock Exchange,BUH,{'DE0008404005'}
+ALVG.VI,Allianz SE,Vienna Stock Exchange - Cash Market,VIE,{'DE0008404005'}
+ALVG.BN,Allianz SE,Berne Stock Exchange,BRN,{'DE0008404005'}
+ALVP.WA,Allianz SE,Warsaw Stock Exchange,WSE,{'DE0008404005'}
+BGALV.BB,Allianz SE,Bulgarian Stock Exchange - Sofia,BLG,{'DE0008404005'}
+ALVG.BU,Allianz SE,Budapest Stock Exchange,BUD,{'DE0008404005'}
+ALVG.xt,Allianz SE,MiFID - Cross Market Data Service,XDS,{'DE0008404005'}
+0M6S.L,Allianz SE,London Stock Exchange,LSE,{'DE0008404005'}
+ALVde.TRE,Allianz SE,London Stock Exchange,LSE,{'DE0008404005'}
+ALVG.S,Allianz SE,Swiss Exchange,SWX,{'DE0008404005'}
+ALVtah.MI,Allianz SE,Milan Stock Exchange,MIL,{'DE0008404005'}
+ALVG.TG,Allianz SE,Tradegate AG,TDG,{'DE0008404005'}
+ALVG.DEU,Allianz SE,German Composite,DEU,{'DE0008404005'}
+ALVN.BIV,Allianz SE,Bolsa Institucional de Valores,BIV,{'DE0008404005'}
+ALV.TX,Allianz SE,EuroTLX,ETX,{'DE0008404005'}
+ALVd.AQX,Allianz SE,AQUIS MTF,AQX,{'DE0008404005'}
+ALVN.MCO,Allianz SE,CONSOLIDATED MEXICAN EXCHANGES,MXQ,{'DE0008404005'}
+ALVGq.L^K07,Allianz SE,London Stock Exchange,LSE,{'DE0008404005'}
+ALVG.PA^D10,Allianz SE,Paris Stock Exchange,PAR,{'DE0008404005'}
+ALVG.AS^K09,Allianz SE,Euronext Amsterdam,AEX,{'DE0008404005'}
+ALVG.VX^B09,Allianz SE,SWX Europe PLC,VTX,{'DE0008404005'}
+ALVGq.L^A10,Allianz SE,London Stock Exchange,LSE,{'DE0008404005'}
+ALVGEUR.PAp^B17,Allianz SE,EuroNext,,{'DE0008404005'}
+ALVG.PAp^C18,Allianz SE,EuroNext,PAR,{'DE0008404005'}
+ALVGEUR.DEp^A18,Allianz SE,Xetra,GER,{'DE0008404005'}
+ALLZF.PK^K06,Allianz SE,USA Pink Sheets,PNK,{'DE0008404005'}
+ALVZn.S^B10,Allianz SE,Swiss Exchange,SWX,{'DE0008404005'}
+ALVEUR.MIp^L17,Allianz SE,Milan Stock Exchange,MIL,{'DE0008404005'}
+ALVG.SGp^L17,Allianz SE,Stuttgart Stock Exchange,STU,{'DE0008404005'}
+ALVGEUR.STp^J18,Allianz SE,OMX Nordic Exchange Stockholm AB - cash,STO,{'DE0008404005'}
+ALVde.PZ^A12,Allianz SE,Aquis Stock Exchange,AQS,{'DE0008404005'}
+ALVG.MB^L17,Allianz SE,BOAT,BDS,{'DE0008404005'}

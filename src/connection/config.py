@@ -30,8 +30,8 @@ class Config:
         self.auth_password = conf['auth'].get('password')
         self.search_url = self.base_url + 'Search/'
         self.extraction_url = self.base_url + 'Extractions/'
-        self.output_docs_path = conf['docs'].get('output_docs_path')
-        self.input_docs_path = conf['docs'].get('input_docs_path')
+        # self.output_docs_path = conf['docs'].get('output_docs_path')
+        # self.input_docs_path = conf['docs'].get('input_docs_path')
 
 
 _config = None

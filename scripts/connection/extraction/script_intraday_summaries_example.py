@@ -5,7 +5,7 @@ from datetime import datetime, date
 from connection.features.extraction.enums.content_field_names.tick_history.intraday_content_field_names import \
     IntradaySummariesContentFieldNames
 from connection.features.extraction.enums.extraction_base_enums import IdentifierType
-from connection.features.extraction.on_demand_extractioner.tick_history_intraday_summaries_extractioner import \
+from connection.features.extraction.on_demand_extractor.tick_history_intraday_summaries_extractor import \
     TickHistoryIntradaySummariesExtractioner
 from connection.utils.condition.condition import TickHistorySummaryInterval
 from connection.utils.condition.tick_history_intraday_summaries_condition import TickHistoryIntradaySummariesCondition

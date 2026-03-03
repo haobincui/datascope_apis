@@ -5,7 +5,7 @@ from datetime import date
 from connection.features.extraction.enums.content_field_names.tick_history.intraday_content_field_names import \
     IntradaySummariesContentFieldNames
 from connection.features.extraction.enums.extraction_base_enums import IdentifierType
-from connection.features.extraction.on_demand_extractioner.tick_history_intraday_summaries_extractioner import \
+from connection.features.extraction.on_demand_extractor.tick_history_intraday_summaries_extractor import \
     TickHistoryIntradaySummariesExtractioner
 from connection.utils.condition.condition import TickHistorySummaryInterval
 from connection.utils.condition.tick_history_intraday_summaries_condition import TickHistoryIntradaySummariesCondition
@@ -80,7 +80,7 @@ def main(contract_id: str, query_start_date: date, query_end_date: date) -> None
             cur_id = '0#CL' + '-' + start_dates[idx].isoformat() + '-' + end_dates[idx].isoformat()
             cur_ids.append(cur_id)
             chunk_extraction.append(extractioner)
-            output_path.append(f'./output/0#CL_trades/{cur_id}.csv.gz')
+            output_path.append(f'./ff_output/0#CL_trades/{cur_id}.csv.gz')
             try:
                 os.mkdir(f'./output/0#CL_trades/{start_dates[idx].year}/')
             except:

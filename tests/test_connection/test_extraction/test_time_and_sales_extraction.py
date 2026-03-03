@@ -4,9 +4,9 @@ from datetime import datetime
 from src.connection.features.extraction.enums.content_field_names.tick_history.time_and_sales_content_field_names import \
     TimeAndSalesContentFieldNames
 from src.connection.features.extraction.enums.extraction_base_enums import IdentifierType
-from src.connection.features.extraction.on_demand_extractioner.tick_history_time_and_sales_extractioner import \
+from src.connection.features.extraction.on_demand_extractor.tick_history_time_and_sales_extractor import \
     TickHistoryTimeAndSalesRawExtractioner
-from src.connection.utils.condition.tick_history_time_and_sales_condtion import TickHistoryTimeAndSalesCondition
+from src.connection.utils.condition.tick_history_time_and_sales_condition import TickHistoryTimeAndSalesCondition
 from src.connection.utils.instrument_identifier_list_base.instrument_identifier_list import InstrumentIdentifier, \
     InstrumentIdentifierList
 

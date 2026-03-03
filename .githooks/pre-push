@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+TARGET_FILE="src/application.ini"
+ZERO_SHA="0000000000000000000000000000000000000000"
+
+USERNAME_PATTERN='^[[:space:]]*username[[:space:]]*=[[:space:]]*[^#;[:space:]].*$'
+PASSWORD_PATTERN='^[[:space:]]*password[[:space:]]*=[[:space:]]*[^#;[:space:]].*$'
+
+violations=()
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  if [[ -z "${local_sha:-}" || "$local_sha" == "$ZERO_SHA" ]]; then
+    continue
+  fi
+
+  if [[ "${remote_sha:-$ZERO_SHA}" == "$ZERO_SHA" ]]; then
+    range="$local_sha"
+  else
+    range="${remote_sha}..${local_sha}"
+  fi
+
+  while IFS= read -r commit; do
+    content="$(git show "${commit}:${TARGET_FILE}" 2>/dev/null || true)"
+    if [[ -z "$content" ]]; then
+      continue
+    fi
+
+    if printf '%s\n' "$content" | grep -Eq "$USERNAME_PATTERN" \
+      && printf '%s\n' "$content" | grep -Eq "$PASSWORD_PATTERN"; then
+      violations+=("$commit")
+    fi
+  done < <(git rev-list "$range" -- "$TARGET_FILE")
+done
+
+if [[ "${#violations[@]}" -gt 0 ]]; then
+  echo "Push blocked: '${TARGET_FILE}' contains non-empty 'username' and 'password' in commits being pushed." >&2
+  echo "Matched commits:" >&2
+  printf '%s\n' "${violations[@]}" | sort -u | while IFS= read -r commit; do
+    [[ -n "$commit" ]] || continue
+    git show -s --format='  - %h %s' "$commit" >&2
+  done
+  echo "Please remove credentials from ${TARGET_FILE}, then amend/rewrite the affected commit(s)." >&2
+  exit 1
+fi
+
+exit 0

@@ -3,6 +3,7 @@ set -euo pipefail
 
 TARGET_FILE="src/application.ini"
 ZERO_SHA="0000000000000000000000000000000000000000"
+REMOTE_NAME="${1:-origin}"
 
 USERNAME_PATTERN='^[[:space:]]*username[[:space:]]*=[[:space:]]*[^#;[:space:]].*$'
 PASSWORD_PATTERN='^[[:space:]]*password[[:space:]]*=[[:space:]]*[^#;[:space:]].*$'
@@ -15,9 +16,9 @@ while read -r local_ref local_sha remote_ref remote_sha; do
   fi
 
   if [[ "${remote_sha:-$ZERO_SHA}" == "$ZERO_SHA" ]]; then
-    range="$local_sha"
+    commit_list_cmd=(git rev-list "$local_sha" --not --remotes="$REMOTE_NAME" -- "$TARGET_FILE")
   else
-    range="${remote_sha}..${local_sha}"
+    commit_list_cmd=(git rev-list "${remote_sha}..${local_sha}" -- "$TARGET_FILE")
   fi
 
   while IFS= read -r commit; do
@@ -30,7 +31,7 @@ while read -r local_ref local_sha remote_ref remote_sha; do
       && printf '%s\n' "$content" | grep -Eq "$PASSWORD_PATTERN"; then
       violations+=("$commit")
     fi
-  done < <(git rev-list "$range" -- "$TARGET_FILE")
+  done < <("${commit_list_cmd[@]}")
 done
 
 if [[ "${#violations[@]}" -gt 0 ]]; then

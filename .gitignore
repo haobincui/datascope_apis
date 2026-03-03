@@ -516,3 +516,10 @@ scripts/market_data/us_bond_data/output/intraday/0#TY+_2023-02-02_2023-02-09.csv
 scripts/market_data/us_bond_data/output/intraday/0#TY+_2023-07-24_2023-07-27.csv.gz
 scripts/market_data/us_bond_data/output/intraday/0#TY+_onemin/2022/0#TY+_2022-09-22_2022-10-22.csv.gz
 scripts/market_data/us_bond_data/output/intraday/0#TY+_onemin/2023/0#TY+_2023-02-02_2023-03-02.csv.gz
+
+
+
+*output
+output*
+*.csv.gz
+*.csv

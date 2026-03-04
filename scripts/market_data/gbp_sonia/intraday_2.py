@@ -5,11 +5,11 @@ from connection.features.extraction.enums.content_field_names.tick_history.intra
 from connection.features.extraction.enums.content_field_names.tick_history.time_and_sales_content_field_names import \
     TimeAndSalesContentFieldNames
 from connection.features.extraction.enums.extraction_base_enums import IdentifierType
-from connection.features.extraction.on_demand_extractioner.tick_history_time_and_sales_extractioner import \
+from connection.features.extraction.on_demand_extractor.tick_history_time_and_sales_extractor import \
     TickHistoryTimeAndSalesRawExtractioner
 from connection.utils.condition.condition import TickHistorySummaryInterval
 from connection.apis.extraction_creator import get_intraday_data
-from connection.utils.condition.tick_history_time_and_sales_condtion import TickHistoryTimeAndSalesCondition
+from connection.utils.condition.tick_history_time_and_sales_condition import TickHistoryTimeAndSalesCondition
 from connection.utils.instrument_identifier_list_base.instrument_identifier_list import InstrumentIdentifier, \
     InstrumentIdentifierList
 

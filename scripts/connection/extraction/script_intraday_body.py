@@ -5,7 +5,7 @@ from connection.client import get_extraction_file_by_job_id, get_extraction_file
 from connection.features.extraction.enums.content_field_names.tick_history.intraday_content_field_names import \
     IntradaySummariesContentFieldNames
 from connection.features.extraction.enums.extraction_base_enums import IdentifierType
-from connection.features.extraction.on_demand_extractioner.tick_history_intraday_summaries_extractioner import \
+from connection.features.extraction.on_demand_extractor.tick_history_intraday_summaries_extractor import \
     TickHistoryIntradaySummariesExtractioner
 from connection.utils.condition.tick_history_intraday_summaries_condition import TickHistoryIntradaySummariesCondition
 from connection.utils.instrument_identifier_list_base.instrument_identifier_list import InstrumentIdentifier, \

@@ -3,7 +3,11 @@ import logging
 import os
 import time
 import urllib.request
-from typing import Union
+from dataclasses import dataclass
+from datetime import datetime, timedelta
+from threading import Lock
+from typing import Optional, Union
+
 import requests
 from src.connection.config import get_config
 from src.connection.features.extraction.enums.extraction_types import ExtractionTypes
@@ -11,11 +15,26 @@ from src.connection.features.search.enums.search_dictionary_types import SearchD
 from src.connection.features.search.enums.search_get_types import GetTypes
 from src.connection.features.search.enums.search_types import SearchTypes, HistoricalSearchTypes
 
-from src.error.error import ExtractionError
+from src.error.error import DataScopeAuthError, DataScopeInputError, ExtractionError, SearchError
 
 _config = get_config()
 
-_token = None
+
+@dataclass
+class Token:
+    value: str
+    acquired_at: datetime
+
+
+_token: Optional[Token] = None
+_token_lock = Lock()
+_token_ttl = timedelta(hours=24)
+
+
+def _ensure_parent_dir(file_path: str) -> None:
+    file_dir = os.path.dirname(file_path)
+    if file_dir:
+        os.makedirs(file_dir, exist_ok=True)
 
 
 # def get_html(url, retry_count=0):
@@ -38,10 +57,11 @@ _token = None
 
 # def 
 
-def _get_token() -> str:
-    global _token
-    if _token:
-        return _token
+def _is_token_expired(token: Token) -> bool:
+    return datetime.utcnow() - token.acquired_at >= _token_ttl
+
+
+def _request_new_token() -> Token:
     request_token_url = _config.request_token_url
     request_body = {
         'Credentials': {
@@ -50,17 +70,64 @@ def _get_token() -> str:
         }
     }
     auth = requests.post(request_token_url, json=request_body)
+    if not auth.ok:
+        raise DataScopeAuthError(
+            message=f'failed to login [{auth.status_code}]',
+            details={'status_code': auth.status_code, 'url': request_token_url},
+        )
     try:
-        _token = auth.json()['value']
+        token_value = auth.json().get('value')
+        if not token_value:
+            raise DataScopeAuthError(
+                message='missing token in login response',
+                details={'status_code': auth.status_code, 'url': request_token_url},
+            )
+        return Token(value=token_value, acquired_at=datetime.utcnow())
+    except Exception as exc:
+        raise DataScopeAuthError(
+            message='failed to login',
+            details={'status_code': auth.status_code, 'url': request_token_url},
+        ) from exc
+
+
+def _refresh_token(token: Token) -> Token:
+    global _token
+    with _token_lock:
+        if _is_token_expired(token):
+            refreshed = _request_new_token()
+            token.value = refreshed.value
+            token.acquired_at = refreshed.acquired_at
+            if _token is None or _token is token:
+                _token = token
+    return token
+
+
+def _get_token() -> Token:
+    global _token
+    with _token_lock:
+        if _token is None or _is_token_expired(_token):
+            _token = _request_new_token()
         return _token
-    except:
-        raise ValueError('failed to login')
+
+
+def _get_token_value(token=None) -> str:
+    if token is None:
+        return _get_token().value
+    if isinstance(token, Token):
+        return _refresh_token(token).value
+    if isinstance(token, str):
+        return token
+    raise DataScopeInputError(message=f'Unsupported token type: {type(token)}')
+
+
+def _build_auth_header(token=None) -> str:
+    return 'Token ' + _get_token_value(token)
 
 
 def search(search_type: Union[SearchTypes, GetTypes, HistoricalSearchTypes], body: dict, max_page_size=5, token=None):
     url = _config.search_url + search_type.value
     headers = {
-        'Authorization': 'Token ' + (token if token else _get_token()),
+        'Authorization': _build_auth_header(token),
         'Prefer': f'odata.maxpagesize={max_page_size}; respond-async',
         'Content-Type': 'application/json'
     }
@@ -69,23 +136,29 @@ def search(search_type: Union[SearchTypes, GetTypes, HistoricalSearchTypes], bod
     elif isinstance(search_type, GetTypes):
         r = requests.get(url, json=body, headers=headers).json()
     else:
-        raise Exception(f'Unsupport search types {search_type.__class__.name}')
+        raise SearchError(message=f'Unsupported search type [{search_type}]')
     if 'error' in r:
-        raise Exception(f"Failed to search {search_type.name} [{r['error']['message']}]")
+        raise SearchError(
+            message=f"Failed to search {search_type.name} [{r['error']['message']}]",
+            details={'url': url, 'search_type': search_type.name},
+        )
     return r['value']
 
 
 def get_search_dictionaries(search_dictionary: SearchDictionary, max_page_size=5, token=None):
     url = _config.search_url + search_dictionary.value
     headers = {
-        'Authorization': 'Token ' + (token if token else _get_token()),
+        'Authorization': _build_auth_header(token),
         'Prefer': f'odata.maxpagesize={max_page_size}; respond-async',
         'Content-Type': 'application/json; odata=minimalmetadata'
     }
     body = {}
     r = requests.get(url, json=body, headers=headers).json()
     if 'error' in r:
-        raise Exception(f'Failed to get {search_dictionary.name}')
+        raise SearchError(
+            message=f'Failed to get {search_dictionary.name}',
+            details={'url': url, 'dictionary': search_dictionary.name},
+        )
     return r['value']
 
 
@@ -96,7 +169,7 @@ def post_extractions_request(extraction_type: ExtractionTypes, body: dict, token
     """
     url = _config.extraction_url + extraction_type.name
     headers = {
-        'Authorization': 'Token ' + (token if token else _get_token()),
+        'Authorization': _build_auth_header(token),
         'Prefer': 'respond-async',  # return the location id in the response, if failed, usually return job id
         'Content-Type': 'application/json; odata=minimalmetadata'
     }
@@ -115,7 +188,10 @@ def post_extractions_request(extraction_type: ExtractionTypes, body: dict, token
         return location
     else:
         res = r.json()
-        raise ValueError(f"Failed to send request for {extraction_type.name} with error {res['error']}")
+        raise ExtractionError(
+            message=f"Failed to send request for {extraction_type.name} with error {res['error']}",
+            details={'status_code': r.status_code, 'url': url},
+        )
 
 
 def get_job_id_by_location(location: str, token=None):
@@ -127,7 +203,7 @@ def get_job_id_by_location(location: str, token=None):
     """
     url = location
     headers = {
-        'Authorization': 'Token ' + (token if token else _get_token()),
+        'Authorization': _build_auth_header(token),
         # 'Prefer': 'respond-async',
     }
     logging.debug('Start getting the Job Id')
@@ -142,7 +218,10 @@ def get_job_id_by_location(location: str, token=None):
         time.sleep(0.1)
         return get_job_id_by_location(location, token)
     else:
-        raise ValueError(f"Failed to get jod id with error [{r.json()}], [{r.status_code}]")
+        raise ExtractionError(
+            message=f"Failed to get job id with error [{r.json()}], [{r.status_code}]",
+            details={'status_code': r.status_code, 'url': url},
+        )
 
 
 def get_job_id_by_extraction_request(extraction_type: ExtractionTypes, body: dict, token=None):
@@ -153,7 +232,7 @@ def get_job_id_by_extraction_request(extraction_type: ExtractionTypes, body: dic
     :param token:
     :return: Job id
     """
-    token = token if token else _get_token()
+    token = _get_token() if token is None else token
 
     location = post_extractions_request(extraction_type, body, token)
     job_id = get_job_id_by_location(location, token)
@@ -178,11 +257,11 @@ def get_extraction_data_by_job_id(extraction_type: ExtractionTypes, job_id: str,
     elif extraction_type == ExtractionTypes.ExtractWithNotes:
         extraction_result_url = _get_extraction_result_url('ExtractionRawWithNotes')
     else:
-        raise ValueError(f'Unsupported extraction type {extraction_type}')
+        raise ExtractionError(message=f'Unsupported extraction type {extraction_type}')
 
     url = _config.extraction_url + extraction_result_url
     headers = {
-        'Authorization': 'Token ' + (token if token else _get_token()),
+        'Authorization': _build_auth_header(token),
         'Prefer': 'respond-async',
     }
 
@@ -191,7 +270,10 @@ def get_extraction_data_by_job_id(extraction_type: ExtractionTypes, job_id: str,
         res = r.text  # str form, need to convert to dataframe
         return res
     else:
-        raise ValueError(f"Failed to get data with error [{r.json()['error']}], [{r.status_code}]")
+        raise ExtractionError(
+            message=f"Failed to get data with error [{r.json()['error']}], [{r.status_code}]",
+            details={'status_code': r.status_code, 'url': url, 'job_id': job_id},
+        )
 
 
 def get_extraction_file_by_job_id(extraction_type: ExtractionTypes, job_id: str, output_file_path: str,
@@ -218,24 +300,21 @@ def get_extraction_file_by_job_id(extraction_type: ExtractionTypes, job_id: str,
 
     url = _config.extraction_url + extraction_result_url
 
-    token = token if token else _get_token()
-
     headers = {
-        "Authorization": "Token " + token,
+        "Authorization": _build_auth_header(token),
         "X-Direct-Download": "true",
         "Prefer": "respond-async"
     }
 
     logging.info('Start downloading the file ')
     r = requests.get(url, headers=headers, stream=True)
+    if not r.ok:
+        raise ExtractionError(
+            message=f'Failed to download file by job id [{job_id}], [{r.status_code}]',
+            details={'status_code': r.status_code, 'url': url, 'job_id': job_id},
+        )
     logging.debug('Successfully get the file, start saving')
-    file_dir = os.path.dirname(output_file_path)
-    try:
-        os.makedirs(file_dir, exist_ok=False)
-        logging.debug(f'Created dir {file_dir}')
-    except Exception as e:
-        logging.debug(f'Dir [{file_dir}] exist, do not need to create')
-        pass
+    _ensure_parent_dir(output_file_path)
     with open(output_file_path, 'wb') as output_file:
         output_file.write(r.content)
 
@@ -255,19 +334,13 @@ def get_extraction_file_by_file_id(extraction_file_id: str, output_file_path: st
     """
     url = _config.extraction_url + f"ExtractedFiles('{extraction_file_id}')" + "/$value"
     headers = {
-        'Authorization': 'Token ' + (token if token else _get_token()),
+        'Authorization': _build_auth_header(token),
         # 'X-Direct-Download': True
     }
     logging.info('Start downloading the file')
 
     url_obj = urllib.request.Request(url=url, headers=headers)
-    file_dir = os.path.dirname(output_file_path)
-    try:
-        os.makedirs(file_dir, exist_ok=False)
-        logging.debug(f'Created dir {file_dir}')
-    except Exception as e:
-        logging.debug(f'Dir [{file_dir}] exist, do not need to create')
-        pass
+    _ensure_parent_dir(output_file_path)
 
     with urllib.request.urlopen(url_obj) as response:
         compressed_file = io.BytesIO(response.read())
@@ -307,7 +380,7 @@ def get_data_file_id_by_job_id(job_id: str, token=None):
     """
     url = _config.extraction_url + f"ExtractedFileByJobId(JobId='{job_id}')"
     headers = {
-        'Authorization': 'Token ' + (token if token else _get_token()),
+        'Authorization': _build_auth_header(token),
         'Prefer': 'respond-async,wait=2'  # async wait time, default = 30
     }
     r = requests.get(url, headers=headers)
@@ -316,6 +389,7 @@ def get_data_file_id_by_job_id(job_id: str, token=None):
         return res['value'][-1]['FileId']
 
     else:
-        # raise ConnectionError(f'Failed to get file by job id, [{r.status_code}]')
-        return ExtractionError(message=f'Failed to get file by job id, [{r.status_code}]')
-
+        raise ExtractionError(
+            message=f'Failed to get file by job id, [{r.status_code}]',
+            details={'status_code': r.status_code, 'url': url, 'job_id': job_id},
+        )

@@ -133,7 +133,7 @@ def merge_data():
     for contract in contracts:
         print(f"Processing {contract} ...")
         for start_date, end_date in zip(start_dates, end_dates):
-            # file = glob.glob(f'./output/*_{start_date.isoformat()}-{end_date.isoformat()}.csv.gz')
+            # file = glob.glob(f'./ff_output/*_{start_date.isoformat()}-{end_date.isoformat()}.csv.gz')
             file = f'./output/{contract}_{start_date.isoformat()}-{end_date.isoformat()}.csv.gz'
             try:
                 raw_data = pd.read_csv(file).fillna({"Volume":0})

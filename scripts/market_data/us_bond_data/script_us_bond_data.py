@@ -84,7 +84,7 @@ for i in range(0, chunks):
         cur_id = id + '_' + start_dates[idx].isoformat() + '_' + end_dates[idx].isoformat()
         cur_ids.append(cur_id)
         chunk_extraction.append(extractioner)
-        output_path.append(f'./output/{id}/{start_dates[idx].year}/{cur_id}.csv.gz')
+        output_path.append(f'./ff_output/{id}/{start_dates[idx].year}/{cur_id}.csv.gz')
         try:
             os.mkdir(f'./output/{id}/{start_dates[idx].year}/')
         except:

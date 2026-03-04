@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from connection.utils.camparsions.comparison_operator import ComparisonOperator
+from .comparison_operator import ComparisonOperator
 
 
 @dataclass()

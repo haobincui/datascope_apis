@@ -127,18 +127,30 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-scripts/bond_future/outputscripts/market_data/stock_data/input/
-scripts/market_data/stock_data/output/
-scripts/bond_future/output/*
 
+# Project IDE files
+.idea/
+.vscode/
 
-scripts/data_to_distribution/input/
-
-scripts/data_to_distribution/output/
-
+# Project generated outputs and artifacts
+logs/
+output/
+output_baback/
 
 output
 *output
 output*
 *.csv.gz
 *.csv
+# Script-level generated outputs
+scripts/**/output/
+scripts/**/outputs/
+scripts/**/wti_output/
+
+# Legacy generated data directories
+scripts/data_to_distribution/input/
+scripts/data_to_distribution/output/
+
+# 
+*output
+

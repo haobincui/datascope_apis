@@ -6,6 +6,8 @@ from enum import Enum
 from functools import singledispatch
 from typing import NoReturn
 
+from src.error.error import InputDataError
+
 
 class FileType(Enum):
     GZ = 1
@@ -27,7 +29,7 @@ class FileProcesser:
         :return:
         """
         if '.gz' not in compressed_file:
-            raise ValueError(f'File [{compressed_file}] is not a .gz file')
+            raise InputDataError(message=f'File [{compressed_file}] is not a .gz file')
 
         if not output_file:
             output_file = compressed_file.split('.gz')[0]
@@ -59,4 +61,4 @@ class FileProcesser:
     @singledispatch
     def convert(output_file_type: FileType, input_file_path: str, output_file_path: str) -> NoReturn:
 
-        raise NotImplemented
+        raise NotImplementedError

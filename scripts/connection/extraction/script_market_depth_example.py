@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 
 from connection.features.extraction.enums.extraction_base_enums import IdentifierType
-from connection.features.extraction.on_demand_extractioner.tick_history_market_depth_extractioner import \
+from connection.features.extraction.on_demand_extractor.tick_history_market_depth_extractor import \
     TickHistoryMarketDepthExtractioner
 from connection.features.extraction.enums.content_field_names.tick_history.market_depth_content_field_name import \
     MarketDepthContentFieldNames

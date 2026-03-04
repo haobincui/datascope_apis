@@ -4,7 +4,7 @@ from datetime import datetime
 from src.connection.features.extraction.enums.content_field_names.tick_history.intraday_content_field_names import \
     IntradaySummariesContentFieldNames
 from src.connection.features.extraction.enums.extraction_base_enums import IdentifierType
-from src.connection.features.extraction.on_demand_extractioner.tick_history_intraday_summaries_extractioner import \
+from src.connection.features.extraction.on_demand_extractor.tick_history_intraday_summaries_extractor import \
     TickHistoryIntradaySummariesExtractioner
 from src.connection.utils.condition.tick_history_intraday_summaries_condition import TickHistoryIntradaySummariesCondition
 from src.connection.utils.instrument_identifier_list_base.instrument_identifier_list import InstrumentIdentifier, \

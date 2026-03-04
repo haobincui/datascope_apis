@@ -1,11 +1,18 @@
 import copy
 from dataclasses import dataclass
-from datetime import datetime, date
+from datetime import date, datetime
 from typing import Union
 
-from src.connection.utils.condition.condition import Condition, TickHistoryExtractByMode, TickHistoryTimeOptions, \
-    PreviewMode, ReportDateRangeType, TickHistorySort, TickHistoryTimeRangeMode
 from src.calendar.datetime_converter import DatetimeConverter
+from src.connection.utils.condition.condition import (
+    Condition,
+    PreviewMode,
+    ReportDateRangeType,
+    TickHistoryExtractByMode,
+    TickHistorySort,
+    TickHistoryTimeOptions,
+    TickHistoryTimeRangeMode,
+)
 
 
 @dataclass()
@@ -43,7 +50,7 @@ class TickHistoryTimeAndSalesCondition(Condition):
             self._RelativeStartTime: self.relative_start_time,
             self._RelativeEndDaysAgo: self.relative_end_days_ago,
             self._RelativeEndTime: self.relative_end_time,
-            self._DisplaySourceRIC: self.display_source_ric
+            self._DisplaySourceRIC: self.display_source_ric,
         }
 
         temp_dict = copy.deepcopy(self.dict_form)
@@ -51,4 +58,3 @@ class TickHistoryTimeAndSalesCondition(Condition):
         for key in temp_dict.keys():
             if temp_dict.get(key) is None:
                 self.dict_form.pop(key)
-

@@ -6,6 +6,7 @@ from market_data.dto.marketdata_do import MarketDataDO
 from market_data.dto.tradedata_do import TradeDataDO
 from market_data.dto.quotedata_do import QuoteDataDO
 from src.calendar import DatetimeConverter
+from src.error.error import InputDataError
 
 #
 
@@ -26,7 +27,7 @@ def rowdata_dto(row: pd.Series, data_type: DataTypes) -> MarketDataDO:
     elif data_type == DataTypes.QUOTE:
         return _quote_data_dto(row)
     else:
-        raise Exception(f'Unknown data type: [{data_type.name}]')
+        raise InputDataError(message=f'Unknown data type: [{data_type.name}]')
 
 
 def _trade_data_dto(row: pd.Series) -> TradeDataDO:

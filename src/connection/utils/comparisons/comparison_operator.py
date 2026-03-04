@@ -8,4 +8,3 @@ class ComparisonOperator(Enum):
     LessThanEquals = 'LessThanEquals'
     Equals = 'Equals'
     NotEquals = 'NotEquals'
-

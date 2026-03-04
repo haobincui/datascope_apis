@@ -137,6 +137,11 @@ logs/
 output/
 output_baback/
 
+output
+*output
+output*
+*.csv.gz
+*.csv
 # Script-level generated outputs
 scripts/**/output/
 scripts/**/outputs/

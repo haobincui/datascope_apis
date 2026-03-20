@@ -148,4 +148,6 @@ scripts/data_to_distribution/output/
 
 # 
 *output
+*.csv.gz
+
 

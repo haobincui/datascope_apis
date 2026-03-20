@@ -10,6 +10,7 @@ from src.calendar.datetime_converter import DatetimeConverter
 
 @dataclass()
 class TickHistoryIntradaySummariesCondition(Condition):
+    """Condition model for tick history intraday summaries requests."""
     query_start_date: Union[datetime, date]
     query_end_date: Union[datetime, date]
     display_source_ric: bool = True
@@ -29,6 +30,11 @@ class TickHistoryIntradaySummariesCondition(Condition):
     time_range_mode: TickHistoryTimeRangeMode = TickHistoryTimeRangeMode.NONE
 
     def __post_init__(self):
+        """Post init.
+
+        Returns:
+            None: No value is returned.
+        """
         datetime_converter_to_input = DatetimeConverter().from_datetime_to_searcher_input
         self.dict_form = {
             self._QueryStartDate: datetime_converter_to_input(self.query_start_date),

@@ -10,6 +10,7 @@ from .holidays import HolidayCalendar, empty_calendar
 
 
 class TimeUnit(Enum):
+    """Represents time unit."""
     BUSINESS_DAY = 1
     DAY = 2
     WEEK = 3
@@ -18,6 +19,7 @@ class TimeUnit(Enum):
 
 
 class BusinessDayConvention(Enum):
+    """Represents business day convention."""
     NONE = 0
     FOLLOWING = 1
     MODIFIED_FOLLOWING = 2
@@ -26,12 +28,14 @@ class BusinessDayConvention(Enum):
 
 
 class EomConvention(Enum):
+    """Represents eom convention."""
     NONE = 0
     LAST_DAY = 1
     LAST_BUSINESS_DAY = 2
 
 
 class StubType(Enum):
+    """Represents stub type."""
     NONE = 0
     SHORT_INITIAL = 1
     SHORT_FINAL = 2
@@ -44,11 +48,25 @@ class StubType(Enum):
 
 @dataclass()
 class Period:
+    """Represents period."""
     length: int
     time_unit: TimeUnit
 
     def __str__(self):
+        """Return a readable string representation.
+
+        Returns:
+            object: Computed result of the operation.
+        """
         def time_unit_to_str(tu: TimeUnit) -> str:
+            """Time unit to str.
+
+            Args:
+                tu (TimeUnit): Input value for tu.
+
+            Returns:
+                str: Computed result of the operation.
+            """
             if tu == TimeUnit.BUSINESS_DAY:
                 return 'B'
             if tu == TimeUnit.DAY:
@@ -63,10 +81,25 @@ class Period:
         return f'{self.length}{time_unit_to_str(self.time_unit)}'
 
     def is_month_based(self):
+        """Is month based.
+
+        Returns:
+            bool: True when the condition is satisfied; otherwise False.
+        """
         return self.time_unit == TimeUnit.MONTH or self.time_unit == TimeUnit.YEAR
 
 
 def adjust_date(start: date, convention: BusinessDayConvention, calendar: HolidayCalendar) -> date:
+    """Adjust date.
+
+    Args:
+        start (date): Input value for start.
+        convention (BusinessDayConvention): Input value for convention.
+        calendar (HolidayCalendar): Input value for calendar.
+
+    Returns:
+        date: Computed result of the operation.
+    """
     if convention == BusinessDayConvention.NONE:
         return start
     end = start
@@ -84,25 +117,71 @@ def adjust_date(start: date, convention: BusinessDayConvention, calendar: Holida
 
 
 def last_day_of_month(start: date) -> date:
+    """Last day of month.
+
+    Args:
+        start (date): Input value for start.
+
+    Returns:
+        date: Computed result of the operation.
+    """
     _, d = monthrange(start.year, start.month)
     return date(start.year, start.month, d)
 
 
 def is_day_last_day_of_month(start: date) -> bool:
+    """Check whether day last day of month.
+
+    Args:
+        start (date): Input value for start.
+
+    Returns:
+        bool: True when the check passes; otherwise False.
+    """
     return start == last_day_of_month(start)
 
 
 def last_business_day_of_month(start: date, calendar: HolidayCalendar) -> date:
+    """Last business day of month.
+
+    Args:
+        start (date): Input value for start.
+        calendar (HolidayCalendar): Input value for calendar.
+
+    Returns:
+        date: Computed result of the operation.
+    """
     return adjust_date(last_day_of_month(start), BusinessDayConvention.PRECEDING, calendar)
 
 
 def is_day_last_business_day_of_month(start: date, calendar: HolidayCalendar) -> bool:
+    """Check whether day last business day of month.
+
+    Args:
+        start (date): Input value for start.
+        calendar (HolidayCalendar): Input value for calendar.
+
+    Returns:
+        bool: True when the check passes; otherwise False.
+    """
     return start == last_business_day_of_month(start, calendar)
 
 
 def plus_period(start: date, period: Period,
                 adj: BusinessDayConvention = BusinessDayConvention.NONE, calendar: HolidayCalendar = empty_calendar(),
                 eom: EomConvention = EomConvention.NONE) -> date:
+    """Plus period.
+
+    Args:
+        start (date): Input value for start.
+        period (Period): Input value for period.
+        adj (BusinessDayConvention): Input value for adj.
+        calendar (HolidayCalendar): Input value for calendar.
+        eom (EomConvention): Input value for eom.
+
+    Returns:
+        date: Computed result of the operation.
+    """
     n = period.length
     if n == 0:
         return start
@@ -136,6 +215,16 @@ def plus_period(start: date, period: Period,
 
 
 def generate_daily_schedule(start: date, end: date, calendar: HolidayCalendar) -> List[date]:
+    """Generate daily schedule.
+
+    Args:
+        start (date): Input value for start.
+        end (date): Input value for end.
+        calendar (HolidayCalendar): Input value for calendar.
+
+    Returns:
+        List[date]: Computed result of the operation.
+    """
     if start > end:
         raise ValueError(f'start date is after end date')
     schedule = []
@@ -147,6 +236,14 @@ def generate_daily_schedule(start: date, end: date, calendar: HolidayCalendar) -
 
 
 def _time_unit_from_string(u: str) -> TimeUnit:
+    """Time unit from string.
+
+    Args:
+        u (str): Input value for u.
+
+    Returns:
+        TimeUnit: Computed result of the operation.
+    """
     unit = u.upper()
     if unit == 'B':
         return TimeUnit.BUSINESS_DAY
@@ -166,6 +263,14 @@ _period_re = re.compile('([0-9]+)([BDWMYbdwmy])')
 
 
 def period_from_string(period: str) -> Period:
+    """Period from string.
+
+    Args:
+        period (str): Input value for period.
+
+    Returns:
+        Period: Computed result of the operation.
+    """
     m = _period_re.match(period)
     if not m:
         raise ValueError(f'{period} is not a valid Period')
@@ -181,6 +286,20 @@ def generate_schedule_simple(start: date,
                              calendar: HolidayCalendar,
                              eom_rule: EomConvention,
                              roll_backward: bool) -> List[date]:
+    """Generate schedule simple.
+
+    Args:
+        start (date): Input value for start.
+        end (date): Input value for end.
+        freq (Period): Input value for freq.
+        bus_rule (BusinessDayConvention): Input value for bus rule.
+        calendar (HolidayCalendar): Input value for calendar.
+        eom_rule (EomConvention): Input value for eom rule.
+        roll_backward (bool): Input value for roll backward.
+
+    Returns:
+        List[date]: Computed result of the operation.
+    """
     adj_eom = freq.is_month_based() and \
               (eom_rule == EomConvention.LAST_DAY
                and last_day_of_month(end if roll_backward else start)) or \
@@ -224,11 +343,34 @@ def generate_schedule_by_tenor(start: date,
                                calendar: HolidayCalendar,
                                eom: EomConvention = EomConvention.NONE,
                                roll_backward: bool = True) -> List[date]:
+    """Generate schedule by tenor.
+
+    Args:
+        start (date): Input value for start.
+        tenor (Period): Input value for tenor.
+        freq (Period): Input value for freq.
+        bus_rule (BusinessDayConvention): Input value for bus rule.
+        calendar (HolidayCalendar): Input value for calendar.
+        eom (EomConvention): Input value for eom.
+        roll_backward (bool): Input value for roll backward.
+
+    Returns:
+        List[date]: Computed result of the operation.
+    """
     end = plus_period(start, tenor, BusinessDayConvention.NONE, calendar, EomConvention.NONE)
     return generate_schedule_simple(start, end, freq, bus_rule, calendar, eom, roll_backward)
 
 
 def get_third_wednesday_for_current_month(d: Union[date, datetime], calendars: List[HolidayCalendar]) -> date:
+    """Return third wednesday for current month.
+
+    Args:
+        d (Union[date, datetime]): Input value for d.
+        calendars (List[HolidayCalendar]): Input value for calendars.
+
+    Returns:
+        date: Requested value for the lookup.
+    """
     first_day = date(d.year, d.month, 1)
     first_day_idx = first_day.weekday() + 1
     if first_day_idx > 3:
@@ -245,6 +387,15 @@ def get_third_wednesday_for_current_month(d: Union[date, datetime], calendars: L
 
 
 def get_last_business_day_for_current_month(d: Union[date, datetime], calendars: List[HolidayCalendar]) -> date:
+    """Return last business day for current month.
+
+    Args:
+        d (Union[date, datetime]): Input value for d.
+        calendars (List[HolidayCalendar]): Input value for calendars.
+
+    Returns:
+        date: Requested value for the lookup.
+    """
     _, end_day = monthrange(d.year, d.month)
     target_date = date(d.year, d.month, end_day)
     is_holiday = [cld.is_holiday(target_date) for cld in calendars]

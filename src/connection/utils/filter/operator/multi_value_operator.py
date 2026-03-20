@@ -1,6 +1,7 @@
-from connection.utils.filter.operator.operator import Operator
+from src.connection.utils.filter.operator.operator import Operator
 
 
 class MultiValueOperator(Operator):
-    In = None,
+    """Represents multi value operator."""
+    In = 'In'
     NotIn = 'NotIn'

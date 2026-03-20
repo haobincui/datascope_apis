@@ -1,8 +1,8 @@
 import unittest
 
-from src.market_data.contract_handler.contract_handler import ContractHandler
-from src.market_data.contract_handler.future_contract import FutureContract
-from src.market_data.contract_handler.option_contract import OptionContract
+from src.market_data.contract.contract_handler import ContractHandler
+from src.market_data.contract.future_contract import FutureContract
+from src.market_data.contract.option_contract import OptionContract
 
 
 class TestContractType(unittest.TestCase):

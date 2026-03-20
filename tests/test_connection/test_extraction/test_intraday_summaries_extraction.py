@@ -1,11 +1,11 @@
 import unittest
 from datetime import datetime
 
-from src.connection.features.extraction.enums.content_field_names.tick_history.intraday_content_field_names import \
+from src.connection.extraction.enums.content_field_names.tick_history.intraday_content_field_names import \
     IntradaySummariesContentFieldNames
-from src.connection.features.extraction.enums.extraction_base_enums import IdentifierType
-from src.connection.features.extraction.on_demand_extractor.tick_history_intraday_summaries_extractor import \
-    TickHistoryIntradaySummariesExtractioner
+from src.connection.extraction.enums.extraction_base_enums import IdentifierType
+from src.connection.extraction.on_demand_extractor.tick_history_intraday_summaries_extractor import \
+    TickHistoryIntradaySummariesExtractor
 from src.connection.utils.condition.tick_history_intraday_summaries_condition import TickHistoryIntradaySummariesCondition
 from src.connection.utils.instrument_identifier_list_base.instrument_identifier_list import InstrumentIdentifier, \
     InstrumentIdentifierList
@@ -35,7 +35,7 @@ class TestIntradaySummariesExtraction(unittest.TestCase):
 
         condition = TickHistoryIntradaySummariesCondition(query_start_date=query_start_date, query_end_date=query_end_date)
 
-        extractioner = TickHistoryIntradaySummariesExtractioner(identifier_list=instrument_list,
+        extractioner = TickHistoryIntradaySummariesExtractor(identifier_list=instrument_list,
                                                                 intraday_summaries_content_field_names=content_field_names,
                                                                 condition=condition)
         body = extractioner.get_body()

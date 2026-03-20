@@ -1,11 +1,12 @@
 
-from connection.utils.filter.operator.operator import Operator
+from src.connection.utils.filter.operator.operator import Operator
 
 
 class RangeOperator(Operator):
-    GreaterThan = 'GreaterThan',
-    GreaterThanEqual = 'GreaterThanEqual',
-    LessThan = 'LessThan',
-    LessThanEqual = 'LessThanEqual',
-    Equal = None,
+    """Represents range operator."""
+    GreaterThan = 'GreaterThan'
+    GreaterThanEqual = 'GreaterThanEqual'
+    LessThan = 'LessThan'
+    LessThanEqual = 'LessThanEqual'
+    Equal = 'Equal'
     NotEqual = 'NotEqual'

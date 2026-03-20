@@ -1,6 +1,6 @@
 import unittest
 
-from src.market_data.contract_handler.utils import has_number_before_letter
+from src.market_data.contract.utils import has_number_before_letter
 
 class TestNumberBeforeText(unittest.TestCase):
     def test_has_number_before_text(self):

@@ -12,6 +12,7 @@ from src.calendar.datetime_converter import DatetimeConverter
 
 
 class TickHistoryMarketDepthViewOptions(Enum):
+    """Represents tick history market depth view options."""
     LegacyLevel2 = 'LegacyLevel2'
     NormalizedLL2 = 'NormalizedLL2'
     RawMarketByOrder = 'RawMarketByOrder'
@@ -22,6 +23,7 @@ class TickHistoryMarketDepthViewOptions(Enum):
 
 @dataclass()
 class TickHistoryMarketDepthCondition(Condition):
+    """Condition model for tick history market depth requests."""
     query_start_date: datetime
     query_end_date: datetime
     display_source_ric: bool = True
@@ -41,6 +43,11 @@ class TickHistoryMarketDepthCondition(Condition):
     view: Optional[TickHistoryMarketDepthViewOptions] = TickHistoryMarketDepthViewOptions.NormalizedLL2
 
     def __post_init__(self):
+        """Post init.
+
+        Returns:
+            None: No value is returned.
+        """
         datetime_converter_to_input = DatetimeConverter().from_datetime_to_searcher_input
         self.dict_form = {
             self._QueryEndDate: datetime_converter_to_input(self.query_end_date),

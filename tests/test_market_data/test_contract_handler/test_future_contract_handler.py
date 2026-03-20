@@ -2,9 +2,9 @@ import unittest
 from datetime import date
 
 from src.calendar.holidays import gbp_calendar, usd_calendar
-from src.market_data.contract_handler.future_contract import FutureContract
-from src.market_data.contract_handler.utils import ContractTerminationRule
-from src.market_data.contract_handler.contract_type import ContractType
+from src.market_data.contract.future_contract import FutureContract
+from src.market_data.contract.utils import ContractTerminationRule
+from src.market_data.contract.contract_type import ContractType
 
 
 

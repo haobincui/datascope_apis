@@ -13,6 +13,7 @@ from src.connection.utils.validation_options.validation_options import Validatio
 
 @dataclass()
 class InstrumentValidationOptions(ValidationOptions):
+    """Represents instrument validation options."""
     allow_open_access_instruments: bool = True
     allow_historical_instruments: bool = True
     allow_limited_term_instruments: bool = True
@@ -29,6 +30,11 @@ class InstrumentValidationOptions(ValidationOptions):
     dict_form: Any = field(init=False)
 
     def __post_init__(self):
+        """Post init.
+
+        Returns:
+            None: No value is returned.
+        """
         self.dict_form = {
             _AllowOpenAccessInstruments: self.allow_open_access_instruments,
             _AllowHistoricalInstruments: self.allow_historical_instruments,

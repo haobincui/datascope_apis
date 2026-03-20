@@ -10,6 +10,7 @@ from src.error.error import InputDataError
 
 
 class FileType(Enum):
+    """Represents file type."""
     GZ = 1
     TXT = 2
     XLSX = 3
@@ -18,6 +19,7 @@ class FileType(Enum):
 
 
 class FileProcesser:
+    """Provide helpers for compression, decompression, and file conversion."""
 
     @staticmethod
     def decompress(compressed_file: str, output_file: str = None, write: bool = True) -> NoReturn:
@@ -46,6 +48,15 @@ class FileProcesser:
 
     @staticmethod
     def compress(decompressed_file: str, output_file: str = None) -> None:
+        """Compress.
+
+        Args:
+            decompressed_file (str): Input value for decompressed file.
+            output_file (str): Target file path for persisted output.
+
+        Returns:
+            None: No value is returned.
+        """
         if not output_file:
             output_file = decompressed_file + '.gz'
 
@@ -61,4 +72,14 @@ class FileProcesser:
     @singledispatch
     def convert(output_file_type: FileType, input_file_path: str, output_file_path: str) -> NoReturn:
 
+        """Convert.
+
+        Args:
+            output_file_type (FileType): Input value for output file type.
+            input_file_path (str): Path to the input file.
+            output_file_path (str): Path to the output file.
+
+        Returns:
+            NoReturn: Computed result of the operation.
+        """
         raise NotImplementedError

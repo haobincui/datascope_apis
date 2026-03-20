@@ -1,47 +1,48 @@
 # Project Structure and Naming Rules
 
-This project uses `src/` as the application package root and keeps runnable examples under `scripts/`.
-
 ## Directory Layout
 
 ```text
 .
 ├── src/
-│   ├── calendar/               # Date/time conversion and holiday logic
-│   ├── connection/             # Datascope API client + extraction/search domain
-│   │   ├── apis/               # High-level API facades
-│   │   ├── features/           # Business features (search, extraction)
-│   │   ├── utils/              # Reusable domain utilities
-│   │   │   ├── comparisons/    # Comparison models/operators (canonical)
-│   │   │   └── condition/      # Extraction/search conditions
-│   │   └── client.py           # HTTP access and auth token management
-│   ├── market_data/            # Market data domain logic
-│   ├── multi_thread/           # Multi-thread orchestration
-│   └── error/                  # Project-specific exceptions
-├── scripts/                    # Runnable scripts and ad-hoc jobs
-├── tests/                      # Unit and integration tests
-├── documents/                  # Project docs
-└── README.md
+│   ├── calendar/                  # Date/time conversion, schedules, holiday logic
+│   ├── connection/                # DataScope domain
+│   │   ├── apis/                  # High-level creators/facades
+│   │   ├── extraction/            # Extraction models and extractors
+│   │   ├── search/                # Search models and searchers
+│   │   ├── shared/                # Shared abstractions/settings
+│   │   ├── infra/http/            # HTTP clients (auth/search/extraction/download)
+│   │   └── utils/                 # Reusable connection-domain utilities
+│   ├── market_data/
+│   │   ├── contract/              # Contract parsing and maturity rules
+│   │   ├── dto/                   # Market data DTOs
+│   │   └── processing/            # Data merge/filter/validation
+│   ├── multi_thread/
+│   ├── math_tools/
+│   └── error/
+├── scripts/
+│   ├── examples/
+│   └── jobs/
+├── tests/
+└── documents/
 ```
 
 ## Naming Rules
 
-1. Use `snake_case` for all folder names and Python modules.
-2. Use full words; avoid typos and abbreviations in directory/module names.
-3. Use role-based suffixes for domain modules:
-   - `*_extractor.py`
-   - `*_condition.py`
-   - `*_comparison.py`
-4. Keep package names singular unless the directory is a true collection (for example, `features`, `utils`, `tests`).
-5. New code should import canonical packages only; compatibility aliases are for legacy scripts.
+1. Use `snake_case` for files/modules.
+2. Use canonical class names:
+   - `*Extractor` (not `*Extractioner`)
+   - `DatetimeSplitter` (not `DatetimeSpliter`)
+3. Use `src.*` imports only.
+4. Keep legacy compatibility aliases out of new code.
 
-## Canonical Paths Introduced
+## Configuration Rules
 
-- `connection.utils.comparisons` (replaces misspelled `camparsions`)
-- `connection.features.extraction.on_demand_extractor` (replaces `on_demand_extractioner`)
-- `tick_history_time_and_sales_condition.py` (replaces `tick_history_time_and_sales_condtion.py`)
-- `futures_and_options_searcher.py` (replaces `funtures_and_options_searcher.py`)
+1. Credentials must come from environment variables (`DATASCOPE_USERNAME`, `DATASCOPE_PASSWORD`).
+2. `src/application.ini` is allowed only as local fallback without committed secrets.
+3. Use `src/application.example.ini` as onboarding template.
 
-## Backward Compatibility Policy
+## Testing Rules
 
-Legacy misspelled modules are kept as alias wrappers so old scripts continue to run. New development must use canonical paths above.
+1. Offline/unit tests run by default.
+2. Network/integration tests must be explicitly enabled (`DATASCOPE_RUN_INTEGRATION=1`).

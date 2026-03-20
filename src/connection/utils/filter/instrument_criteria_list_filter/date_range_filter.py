@@ -3,8 +3,8 @@ from datetime import datetime
 
 from src.connection.utils.filter.instrument_criteria_list_filter.instrument_criteria_list_filter import \
     InstrumentCriteriaListFilter
-from connection.utils.filter.operator.range_operator import RangeOperator
-from connection.utils import _odata_type
+from src.connection.utils.filter.operator.range_operator import RangeOperator
+from src.connection.utils import _odata_type
 from src.calendar import DatetimeConverter
 
 _Name = 'Name'
@@ -16,6 +16,7 @@ _Op = 'Op'
 
 @dataclass()
 class DateRangeFilter(InstrumentCriteriaListFilter):
+    """Represents date range filter."""
     max_datetime_value: datetime = None
     min_datetime_value: datetime = None
     condition_name: str = None
@@ -25,6 +26,11 @@ class DateRangeFilter(InstrumentCriteriaListFilter):
     dict_form: dict = field(init=False)
 
     def __post_init__(self):
+        """Post init.
+
+        Returns:
+            None: No value is returned.
+        """
         datetime_converter_to_input = DatetimeConverter().from_datetime_to_searcher_input
         self.filter_name = '#DataScope.Select.Api.Extractions.SubjectLists.DateRangeFilter'
         self.dict_form = {
@@ -36,7 +42,7 @@ class DateRangeFilter(InstrumentCriteriaListFilter):
             _Value: datetime_converter_to_input(self.operator_datetime_value)
         }
         #  remove all None value
-        for key in self.dict_form.keys():
+        for key in list(self.dict_form.keys()):
             if self.dict_form[key] is None:
                 self.dict_form.pop(key)
 

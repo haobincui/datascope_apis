@@ -2,15 +2,18 @@ import os
 from datetime import datetime, date
 from typing import List, Union
 
-from connection.apis.extraction_creator import ExtractionCreator
-from connection.features.extraction.enums.content_field_names.tick_history.intraday_content_field_names import \
+from src.connection.apis.extraction_creator import ExtractionCreator
+from src.connection.extraction.enums.content_field_names.tick_history.intraday_content_field_names import \
     IntradaySummariesContentFieldNames
-from connection.features.extraction.enums.extraction_base_enums import IdentifierType
-from connection.utils.condition.condition import TickHistorySummaryInterval
+from src.connection.extraction.enums.content_field_names.tick_history.time_and_sales_content_field_names import \
+    TimeAndSalesContentFieldNames
+from src.connection.extraction.enums.extraction_base_enums import IdentifierType
+from src.connection.utils.condition.condition import TickHistorySummaryInterval
 from src.calendar import plus_period, Period, TimeUnit, EomConvention
 
 
 class ChunkDataCreator:
+    """Build chunked extraction requests and output paths."""
 
     @staticmethod
     def tick_history(
@@ -22,7 +25,21 @@ class ChunkDataCreator:
             query_start_date: Union[datetime, date], query_end_date: Union[datetime, date],
             num_of_chunks: int
     ) -> (List[List[ExtractionCreator]], List[List[str]]):
+        """Build chunked tick-history extraction jobs and output file paths.
 
+        Args:
+            contract_id (str): Contract identifier used in all extraction requests.
+            identifier_type (IdentifierType): Identifier type used to interpret the instrument code.
+            content_field_names (List[IntradaySummariesContentFieldNames]): Intraday summary fields requested for each chunk.
+            summary_interval (TickHistorySummaryInterval): Aggregation interval for each intraday result set.
+            output_path (str): Output directory or file path.
+            query_start_date (Union[datetime, date]): Inclusive start time for the query range.
+            query_end_date (Union[datetime, date]): Inclusive end time for the query range.
+            num_of_chunks (int): Number of chunk groups used to partition the total date range.
+
+        Returns:
+            (List[List[ExtractionCreator]], List[List[str]]): Chunked extraction objects and their target output paths.
+        """
         output_paths = []
         extractions = []
 
@@ -65,12 +82,25 @@ class ChunkDataCreator:
     def time_and_sales(
             contract_id: str,
             identifier_type: IdentifierType,
-            content_field_names: List[IntradaySummariesContentFieldNames],
+            content_field_names: List[TimeAndSalesContentFieldNames],
             output_path: str,
             query_start_date: Union[datetime, date], query_end_date: Union[datetime, date],
             num_of_chunks: int
     ) -> (List[List[ExtractionCreator]], List[List[str]]):
+        """Build chunked time-and-sales extraction jobs and output file paths.
 
+        Args:
+            contract_id (str): Contract identifier used in all extraction requests.
+            identifier_type (IdentifierType): Identifier type used to interpret the instrument code.
+            content_field_names (List[TimeAndSalesContentFieldNames]): Tick fields requested for each chunk.
+            output_path (str): Output directory or file path.
+            query_start_date (Union[datetime, date]): Inclusive start time for the query range.
+            query_end_date (Union[datetime, date]): Inclusive end time for the query range.
+            num_of_chunks (int): Number of chunk groups used to partition the total date range.
+
+        Returns:
+            (List[List[ExtractionCreator]], List[List[str]]): Chunked extraction objects and their target output paths.
+        """
         output_paths = []
         extractions = []
 

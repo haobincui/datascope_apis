@@ -28,6 +28,14 @@ from typing import Union
 #         return v
 
 def str_to_int_within_dict(d: dict):
+    """Str to int within dict.
+
+    Args:
+        d (dict): Input value for d.
+
+    Returns:
+        object: Computed result of the operation.
+    """
     res = {}
     for key in d.keys():
         res.update({key: int(d[key])})
@@ -43,6 +51,14 @@ class DatetimeConverter:
 
     @staticmethod
     def to_datetime(input_datetime: Union[date, datetime]) -> datetime:
+        """Convert to datetime.
+
+        Args:
+            input_datetime (Union[date, datetime]): Input value for input datetime.
+
+        Returns:
+            datetime: Computed result of the operation.
+        """
         if type(input_datetime) == datetime:
             return input_datetime
         else:

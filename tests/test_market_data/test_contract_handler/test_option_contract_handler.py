@@ -2,9 +2,9 @@ import unittest
 from datetime import date, time, datetime
 
 from src.calendar.holidays import gbp_calendar, usd_calendar
-from src.market_data.contract_handler.option_contract import OptionContract
-from src.market_data.contract_handler.utils import ContractTerminationRule
-from src.market_data.contract_handler.contract_type import ContractType
+from src.market_data.contract.option_contract import OptionContract
+from src.market_data.contract.utils import ContractTerminationRule
+from src.market_data.contract.contract_type import ContractType
 from src.utils import OptionType
 
 

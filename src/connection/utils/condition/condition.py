@@ -33,24 +33,28 @@ class Condition:
 
 
 class TickHistoryExtractByMode(Enum):
+    """Represents tick history extract by mode."""
     Entity = 'Entity'
     Ric = 'Ric'
     NONE = None
 
 
 class TickHistoryTimeOptions(Enum):
+    """Represents tick history time options."""
     GmtUtc = 'GmtUtc'
     LocalExchangeTime = 'LocalExchangeTime'
     NONE = None
 
 
 class PreviewMode(Enum):
+    """Represents preview mode."""
     Content = 'Content'
     Instrument = 'Instrument'
     NONE = None
 
 
 class ReportDateRangeType(Enum):
+    """Represents report date range type."""
     Delta = 'Delta'
     Init = 'Init'
     Last = 'Last'
@@ -62,24 +66,28 @@ class ReportDateRangeType(Enum):
 
 
 class TickHistorySort(Enum):
+    """Represents tick history sort."""
     SingleByRic = 'SingleByRic'
     SingleByTimestamp = 'SingleByTimestamp'
     NONE = None
 
 
 class TickTimeRangeMode(Enum):
+    """Represents tick time range mode."""
     Inclusive = 'Inclusive'
     Window = 'Window'
     NONE = None
 
 
 class TickHistoryTimeRangeMode(Enum):
+    """Represents tick history time range mode."""
     Inclusion = 'Inclusive'
     Window = 'Window'
     NONE = None
 
 
 class TickHistorySummaryInterval(Enum):
+    """Represents tick history summary interval."""
     OneSecond = 'OneSecond'
     FiveSeconds = 'FiveSeconds'
     OneMinute = 'OneMinute'

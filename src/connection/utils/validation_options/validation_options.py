@@ -19,5 +19,6 @@ _AllowSubclassImport = 'AllowSubclassImport'
 
 @dataclass()
 class ValidationOptions:
+    """Represents validation options."""
     dict_form: Any = field(init=False)
 

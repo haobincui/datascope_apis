@@ -3,29 +3,49 @@ from typing import Union
 
 import pandas as pd
 
-from src.market_data.contract_handler.future_contract import FutureContract
-from market_data.contract_handler.option_contract import OptionContract
-from market_data.dto.json_obj import JsonObj
+from src.market_data.contract.future_contract import FutureContract
+from src.market_data.contract.option_contract import OptionContract
+from src.market_data.dto.json_obj import JsonObj
 
 
 class MarketDataDO(JsonObj):
 
+    """Represents market data do."""
     def get_price(self) -> float:
-        pass
+        """Return price.
+
+        Returns:
+            float: Requested value for the lookup.
+        """
+        raise NotImplementedError
 
     def to_json(self) -> dict:
-        pass
+        """Convert to json.
+
+        Returns:
+            dict: Computed result of the operation.
+        """
+        raise NotImplementedError
 
     def to_dataframe(self) -> pd.DataFrame:
-        pass
+        """Convert to dataframe.
+
+        Returns:
+            pd.DataFrame: Computed result of the operation.
+        """
+        raise NotImplementedError
 
     def to_contract(self) -> Union[OptionContract, FutureContract]:
-        pass
+        """Convert to contract.
+
+        Returns:
+            Union[OptionContract, FutureContract]: Computed result of the operation.
+        """
+        raise NotImplementedError
 
     def get_data_time(self) -> datetime:
         """return the trade time or the quote time of the data"""
-        pass
-
+        raise NotImplementedError
 
 
 

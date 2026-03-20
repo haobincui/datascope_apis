@@ -2,8 +2,8 @@ from dataclasses import dataclass, field
 
 from src.connection.utils.filter.instrument_criteria_list_filter.instrument_criteria_list_filter import \
     InstrumentCriteriaListFilter
-from connection.utils.filter.operator.range_operator import RangeOperator
-from connection.utils import _odata_type
+from src.connection.utils.filter.operator.range_operator import RangeOperator
+from src.connection.utils import _odata_type
 
 _Name = 'Name'
 _Op = 'Op'
@@ -14,6 +14,7 @@ _Min = 'Min'
 
 @dataclass()
 class RangeFilter(InstrumentCriteriaListFilter):
+    """Represents range filter."""
     max_value: float = None
     min_value: float = None
     condition_name: str = None
@@ -23,6 +24,11 @@ class RangeFilter(InstrumentCriteriaListFilter):
     dict_form: dict = field(init=False)
 
     def __post_init__(self):
+        """Post init.
+
+        Returns:
+            None: No value is returned.
+        """
         self.filter_name = '#DataScope.Select.Api.Extractions.SubjectLists.RangeFilter'
         self.dict_form = {
             _odata_type: self.filter_name,
@@ -33,7 +39,7 @@ class RangeFilter(InstrumentCriteriaListFilter):
             _Value: self.condition_value
         }
         #  remove all None value
-        for key in self.dict_form.keys():
+        for key in list(self.dict_form.keys()):
             if self.dict_form[key] is None:
                 self.dict_form.pop(key)
 

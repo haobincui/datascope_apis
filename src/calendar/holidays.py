@@ -161,15 +161,26 @@ _aliases_map = {}
 
 
 def holidays_map() -> dict:
+    """Holidays map.
+
+    Returns:
+        dict: Computed result of the operation.
+    """
     return _holidays_map
 
 
 def aliases_map() -> dict:
+    """Aliases map.
+
+    Returns:
+        dict: Computed result of the operation.
+    """
     return _aliases_map
 
 
 @dataclass
 class HolidayCalendar:
+    """Represents holiday calendar."""
     calendars: List[str]
     include_weekends: bool
     actual_calendars: List[str] = field(init=False)
@@ -177,9 +188,22 @@ class HolidayCalendar:
     # TODO: add weekends defs (may not be saturday/sundays)
 
     def __post_init__(self):
+        """Post init.
+
+        Returns:
+            None: No value is returned.
+        """
         self.actual_calendars = [c if c in _holidays_map else _aliases_map[c] for c in self.calendars]
 
     def is_holiday(self, t: date) -> bool:
+        """Check whether holiday.
+
+        Args:
+            t (date): Input value for t.
+
+        Returns:
+            bool: True when the check passes; otherwise False.
+        """
         if self.include_weekends and t.weekday() >= 5:
             return True
         for c in self.actual_calendars:
@@ -188,6 +212,17 @@ class HolidayCalendar:
         return False
 
     def count_business_days(self, start: date, end: date, include_start: bool, include_end: bool) -> int:
+        """Count business days.
+
+        Args:
+            start (date): Input value for start.
+            end (date): Input value for end.
+            include_start (bool): Input value for include start.
+            include_end (bool): Input value for include end.
+
+        Returns:
+            int: Computed result of the operation.
+        """
         if start == end:
             return 0
         if start > end:
@@ -205,12 +240,28 @@ class HolidayCalendar:
         return total
 
     def next(self, start: date) -> date:
+        """Next.
+
+        Args:
+            start (date): Input value for start.
+
+        Returns:
+            date: Computed result of the operation.
+        """
         t = start + timedelta(days=1)
         while self.is_holiday(t):
             t = t + timedelta(days=1)
         return t
 
     def prev(self, start: date) -> date:
+        """Prev.
+
+        Args:
+            start (date): Input value for start.
+
+        Returns:
+            date: Computed result of the operation.
+        """
         t = start - timedelta(days=1)
         while self.is_holiday(t):
             t = t - timedelta(days=1)
@@ -231,11 +282,28 @@ _usd_calendar = HolidayCalendar(calendars=['USD'], include_weekends=True)
 
 
 def create_calendar(name: str, holidays: List[date]) -> HolidayCalendar:
+    """Create calendar.
+
+    Args:
+        name (str): Input value for name.
+        holidays (List[date]): Input value for holidays.
+
+    Returns:
+        HolidayCalendar: Computed result of the operation.
+    """
     _holidays_map[name] = set(holidays)
     return HolidayCalendar(calendars=[name], include_weekends=True)
 
 
 def delete_calendar(name: str) -> NoReturn:
+    """Delete calendar.
+
+    Args:
+        name (str): Input value for name.
+
+    Returns:
+        NoReturn: Computed result of the operation.
+    """
     if name in _aliases_map:
         del _aliases_map[name]
     else:
@@ -250,34 +318,77 @@ def delete_calendar(name: str) -> NoReturn:
 
 
 def weekends_only_calendar():
+    """Weekends only calendar.
+
+    Returns:
+        object: Computed result of the operation.
+    """
     return _weekends_only
 
 
 def empty_calendar():
+    """Empty calendar.
+
+    Returns:
+        object: Computed result of the operation.
+    """
     return _none_cld
 
 
 def embedded_calendar():
+    """Embedded calendar.
+
+    Returns:
+        object: Computed result of the operation.
+    """
     return _embedded_cny
 
 
 def eur_calendar():
+    """Eur calendar.
+
+    Returns:
+        object: Computed result of the operation.
+    """
     return _eur_calendar
 
 
 def gbp_calendar():
+    """Gbp calendar.
+
+    Returns:
+        object: Computed result of the operation.
+    """
     return _gbp_calendar
 
 
 def usd_calendar():
+    """Usd calendar.
+
+    Returns:
+        object: Computed result of the operation.
+    """
     return _usd_calendar
 
 
 def embedded_holidays() -> List[date]:
+    """Embedded holidays.
+
+    Returns:
+        List[date]: Computed result of the operation.
+    """
     return list(_cny_holidays)
 
 
 def _get_holidays(c: str) -> Set[date]:  # return set for union of calendars
+    """Return holidays.
+
+    Args:
+        c (str): Input value for c.
+
+    Returns:
+        Set[date]: Computed result of the operation.
+    """
     h = c
     if c not in _holidays_map:
         if c in _aliases_map:
@@ -288,12 +399,28 @@ def _get_holidays(c: str) -> Set[date]:  # return set for union of calendars
 
 
 def get_holidays(name: str) -> List[date]:
+    """Return holidays.
+
+    Args:
+        name (str): Input value for name.
+
+    Returns:
+        List[date]: Requested value for the lookup.
+    """
     cs = [c.strip() for c in name.split(",")]
     hs = [_get_holidays(c) for c in cs]
     return sorted((set().union(*hs)))
 
 
 def get_calendar(name: str) -> HolidayCalendar:
+    """Return calendar.
+
+    Args:
+        name (str): Input value for name.
+
+    Returns:
+        HolidayCalendar: Requested value for the lookup.
+    """
     if name.upper() == 'NONE':
         return _none_cld
     cs = [c.strip() for c in name.split(",")]
@@ -304,6 +431,15 @@ def get_calendar(name: str) -> HolidayCalendar:
 
 
 def add_alias(alias: str, holidays: str) -> NoReturn:
+    """Add alias.
+
+    Args:
+        alias (str): Input value for alias.
+        holidays (str): Input value for holidays.
+
+    Returns:
+        NoReturn: Computed result of the operation.
+    """
     if holidays not in _holidays_map:
         raise ValueError(f'{holidays} does not exist')
     if alias in _aliases_map:
@@ -318,11 +454,24 @@ def add_alias(alias: str, holidays: str) -> NoReturn:
 
 
 def delete_alias(alias: str) -> NoReturn:
+    """Delete alias.
+
+    Args:
+        alias (str): Input value for alias.
+
+    Returns:
+        NoReturn: Computed result of the operation.
+    """
     if alias in _aliases_map:
         del _aliases_map[alias]
 
 
 def list_calendars_and_aliases() -> dict:
+    """List calendars and aliases.
+
+    Returns:
+        dict: Computed result of the operation.
+    """
     calendars = list(_holidays_map.keys())
     aliases = {c: [a for a in _aliases_map.keys() if _aliases_map[a] == c] for c in calendars}
     return {'calendars': calendars,

@@ -10,6 +10,14 @@ class DataTypeConverter:
 
     @staticmethod
     def from_text_to_dataframe(input_data: str) -> pd.DataFrame:
+        """Create from text to dataframe.
+
+        Args:
+            input_data (str): Input value for input data.
+
+        Returns:
+            pd.DataFrame: Computed result of the operation.
+        """
         text = re.split('[\r\t]', input_data)
         text_list = [text[i: -1] for i in range(0, len(text))]
 

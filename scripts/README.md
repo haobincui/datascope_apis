@@ -1,21 +1,13 @@
-# Scripts Directory Convention
+# Scripts Layout
 
-## Purpose
+`scripts/` is split into two groups:
 
-`scripts/` contains runnable examples, one-off jobs, and data extraction workflows.
+- `scripts/examples/`: runnable usage examples and exploratory snippets.
+- `scripts/jobs/`: batch jobs, replay tasks, and dated production snapshots.
 
-## Folder Naming
+## Conventions
 
-1. Use lowercase `snake_case`.
-2. Use domain-first naming:
-   - `market_data/...`
-   - `connection/...`
-   - `multi_threads/...`
-3. Time-stamped folders are allowed only for frozen snapshots (for example, `tick_data_20241212`).
-4. Output folders should be named `output/` (or `outputs/` when multiple variants are required).
-
-## File Naming
-
-1. Script files should start with `script_` and describe intent.
-2. Prefer one concern per script (search, extraction, transform, validation).
-3. Shared helper logic should live under `src/`, not duplicated across scripts.
+1. Use `src.*` imports only.
+2. Do not use `sys.path.insert(...)`.
+3. Keep generated outputs under local `output/` folders and out of tracked source logic.
+4. Prefer moving shared logic into `src/` instead of duplicating it across scripts.

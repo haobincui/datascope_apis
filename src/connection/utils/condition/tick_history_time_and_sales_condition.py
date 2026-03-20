@@ -17,6 +17,7 @@ from src.connection.utils.condition.condition import (
 
 @dataclass()
 class TickHistoryTimeAndSalesCondition(Condition):
+    """Condition model for tick history time and sales requests."""
     query_start_date: Union[datetime, date]
     query_end_date: Union[datetime, date]
     apply_corrections_and_cancellations: bool = True
@@ -35,6 +36,11 @@ class TickHistoryTimeAndSalesCondition(Condition):
     time_range_mode: TickHistoryTimeRangeMode = TickHistoryTimeRangeMode.Inclusion
 
     def __post_init__(self):
+        """Post init.
+
+        Returns:
+            None: No value is returned.
+        """
         datetime_converter_to_input = DatetimeConverter().from_datetime_to_searcher_input
         self.dict_form = {
             self._QueryStartDate: datetime_converter_to_input(self.query_start_date),

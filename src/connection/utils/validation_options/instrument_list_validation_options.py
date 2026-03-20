@@ -11,6 +11,7 @@ from src.connection.utils.validation_options.validation_options import Validatio
 @dataclass()
 class InstrumentListValidationOptions(ValidationOptions):
     # allow_duplicate_instruments: bool = False
+    """Represents instrument list validation options."""
     allow_open_access_instruments: bool = None
     allow_historical_instruments: bool = True
     # allow_limited_term_instruments: bool = True
@@ -27,6 +28,11 @@ class InstrumentListValidationOptions(ValidationOptions):
     dict_form: Any = field(init=False)
 
     def __post_init__(self):
+        """Post init.
+
+        Returns:
+            None: No value is returned.
+        """
         self.dict_form = {
             # _AllowDuplicateInstruments: self.allow_duplicate_instruments,
             # _AllowOpenAccessInstruments: self.allow_open_access_instruments,

@@ -1,11 +1,11 @@
 import unittest
 from datetime import datetime
 
-from src.connection.features.extraction.enums.content_field_names.tick_history.market_depth_content_field_name import \
+from src.connection.extraction.enums.content_field_names.tick_history.market_depth_content_field_name import \
     MarketDepthContentFieldNames
-from src.connection.features.extraction.enums.extraction_base_enums import IdentifierType
-from src.connection.features.extraction.on_demand_extractor.tick_history_market_depth_extractor import \
-    TickHistoryMarketDepthExtractioner
+from src.connection.extraction.enums.extraction_base_enums import IdentifierType
+from src.connection.extraction.on_demand_extractor.tick_history_market_depth_extractor import \
+    TickHistoryMarketDepthExtractor
 from src.connection.utils.condition.tick_history_market_depth_condition import TickHistoryMarketDepthCondition
 from src.connection.utils.instrument_identifier_list_base.instrument_identifier_list import InstrumentIdentifier, \
     InstrumentIdentifierList
@@ -40,7 +40,7 @@ class TestMarketDepthExtraction(unittest.TestCase):
         condition = TickHistoryMarketDepthCondition(query_start_date,
                                                     query_end_date,
                                                     number_of_levels=nums_of_levels)
-        extractioner = TickHistoryMarketDepthExtractioner(instrument_list, content_field_names, condition)
+        extractioner = TickHistoryMarketDepthExtractor(instrument_list, content_field_names, condition)
 
         body = extractioner.get_body()
         target_body = {

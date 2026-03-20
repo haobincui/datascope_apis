@@ -5,10 +5,10 @@ from typing import Union
 import numpy as np
 import pandas as pd
 
-from market_data.contract_handler.contract_handler import ContractHandler
-from src.market_data.contract_handler.future_contract import FutureContract
-from market_data.contract_handler.option_contract import OptionContract
-from market_data.dto.marketdata_do import MarketDataDO
+from src.market_data.contract.contract_handler import ContractHandler
+from src.market_data.contract.future_contract import FutureContract
+from src.market_data.contract.option_contract import OptionContract
+from src.market_data.dto.marketdata_do import MarketDataDO
 
 
 # #RIC, Underlying RIC,Date-Time,GMT Offset,Type,Bid Price,Bid Size,Ask Price,Ask Size
@@ -17,11 +17,13 @@ from market_data.dto.marketdata_do import MarketDataDO
 
 
 class QuoteType(Enum):
+    """Represents quote type."""
     Ask = 'Ask'
     Bid = 'Bid'
 
 
 class QuoteDataDO(MarketDataDO):
+    """Represents quote data do."""
     def __init__(self,
                  contract_id: str,
                  quote_time: Union[datetime, date],
@@ -29,6 +31,19 @@ class QuoteDataDO(MarketDataDO):
                  bid_size: float,
                  ask_price: float,
                  ask_size: float):
+        """Initialize the instance.
+
+        Args:
+            contract_id (str): Input value for contract id.
+            quote_time (Union[datetime, date]): Input value for quote time.
+            bid_price (float): Input value for bid price.
+            bid_size (float): Input value for bid size.
+            ask_price (float): Input value for ask price.
+            ask_size (float): Input value for ask size.
+
+        Returns:
+            None: No value is returned.
+        """
         self.contract_id = contract_id
         self.quote_time = quote_time
         if not np.isnan(bid_price) and not np.isnan(bid_size):
@@ -44,12 +59,27 @@ class QuoteDataDO(MarketDataDO):
         self.__type = 'Quote'
 
     def get_price(self):
+        """Return price.
+
+        Returns:
+            object: Requested value for the lookup.
+        """
         return self.bid_price if self.quote_type == QuoteType.Bid else self.ask_price
 
     def get_data_time(self) -> datetime:
+        """Return data time.
+
+        Returns:
+            datetime: Requested value for the lookup.
+        """
         return self.quote_time
 
     def to_json(self) -> dict:
+        """Convert to json.
+
+        Returns:
+            dict: Computed result of the operation.
+        """
         if self.quote_type == QuoteType.Bid:
             return {
                 'ric': self.contract_id,
@@ -71,6 +101,11 @@ class QuoteDataDO(MarketDataDO):
             }
 
     def to_dataframe(self) -> pd.Series:
+        """Convert to dataframe.
+
+        Returns:
+            pd.Series: Computed result of the operation.
+        """
         if self.quote_type == QuoteType.Bid:
             series = pd.Series(
                 data=[self.contract_id, self.quote_time, self.__type, self.bid_price, self.bid_size, self.quote_type],
@@ -84,6 +119,11 @@ class QuoteDataDO(MarketDataDO):
         return series
 
     def to_contract(self) -> Union[OptionContract, FutureContract]:
+        """Convert to contract.
+
+        Returns:
+            Union[OptionContract, FutureContract]: Computed result of the operation.
+        """
         contract = ContractHandler(self.contract_id).to_contract()
         return contract
 

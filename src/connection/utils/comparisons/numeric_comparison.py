@@ -5,26 +5,39 @@ from .comparison_operator import ComparisonOperator
 
 @dataclass()
 class NumericComparison:
+    """Represents numeric comparison."""
     pass
 
 
 @dataclass()
 class NumericValueComparison(NumericComparison):
+    """Represents numeric value comparison."""
     comparison_operator: ComparisonOperator
     target_number: float
     comparisoner_name: str = field(init=False)
 
     def __post_init__(self):
+        """Post init.
+
+        Returns:
+            None: No value is returned.
+        """
         self.comparisoner_name = '#DataScope.Select.Api.Search.NumericValueComparison'
 
 
 @dataclass()
 class NumericRangeComparison(NumericComparison):
+    """Represents numeric range comparison."""
     from_number: float
     to_number: float
     comparisoner_name: str = field(init=False)
 
     def __post_init__(self):
+        """Post init.
+
+        Returns:
+            None: No value is returned.
+        """
         self.comparisoner_name = '#DataScope.Select.Api.Search.NumericRangeComparison'
 
         if self.from_number - self.to_number < 0:

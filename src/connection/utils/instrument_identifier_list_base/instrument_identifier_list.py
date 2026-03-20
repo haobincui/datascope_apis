@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List, Optional
 
-from src.connection.features.extraction.enums.extraction_base_enums import IdentifierType
+from src.connection.extraction.enums.extraction_base_enums import IdentifierType
 from src.connection.utils.instrument_identifier_list_base.instrument_identifier_list_base import \
     InstrumentIdentifierListBase
 from src.connection.utils.validation_options.instrument_list_validation_options import \
@@ -21,11 +21,17 @@ _UseUserPreferencesForValidationOptions = 'UseUserPreferencesForValidationOption
 
 @dataclass()
 class InstrumentIdentifier:
+    """Represents instrument identifier."""
     identifier: str
     identifier_type: IdentifierType
     dict_form: dict = field(init=False)
 
     def __post_init__(self):
+        """Post init.
+
+        Returns:
+            None: No value is returned.
+        """
         self.dict_form = {
             _Identifier: self.identifier,
             IdentifierType.__name__: self.identifier_type.name
@@ -34,12 +40,21 @@ class InstrumentIdentifier:
 
 @dataclass()
 class InstrumentIdentifierList(InstrumentIdentifierListBase):
+    """Represents instrument identifier list."""
     identifier_list: List[InstrumentIdentifier]
     source: str = None
     use_user_preferences_for_validation_options: bool = False
     validation_options: Optional[ValidationOptions] = default_instrument_list_validation_options
 
     def get_dict_form(self, request_name: str) -> dict:
+        """Return dict form.
+
+        Args:
+            request_name (str): Input value for request name.
+
+        Returns:
+            dict: Requested value for the lookup.
+        """
         if self.validation_options is None:
             _validation_options = None
         else:

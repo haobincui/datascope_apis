@@ -4,16 +4,16 @@ import os
 import sys
 from datetime import date
 
-from src.calendar.schedule import plus_period, EomConvention, TimeUnit, Period
-from src.multi_thread.implement.extraction_imp import ExtractionImp
 
 BASE_DIR = os.path.abspath(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
-sys.path.insert(0, '/home/haobin_cui/option_data_processor')
+sys.path.insert(0, '/home/haobin_cui/datascope_apis')
 # sys.path.insert(0, '/Users/haobincui/Documents/option_data_processor')
 
 
 from src.connection.apis.extraction_creator import ExtractionCreator
+from src.calendar.schedule import plus_period, EomConvention, TimeUnit, Period
+from src.multi_thread.implement.extraction_imp import ExtractionImp
 
 from src.connection.features.extraction.enums.content_field_names.tick_history.time_and_sales_content_field_names import \
     TimeAndSalesContentFieldNames
@@ -25,7 +25,7 @@ from src.connection.features.extraction.enums.extraction_base_enums import Ident
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 
-output_path = 'output'
+# output_path = 'output'
 
 """
 Instruction:
@@ -64,7 +64,7 @@ content_fields = {
 
 ### target date:
 query_start_date = date(1996, 1, 1)
-query_end_date = date(1996, 3, 1)
+query_end_date = date(2025, 1, 1)
 
 query_start_dates = [query_start_date]
 # query_end_dates = [query_end_date]
@@ -90,8 +90,8 @@ for data_type in content_fields.keys():
                 content_fields[data_type]
             )
             cur_id = contract_id + '_' + data_type + '_' + query_start_dates[idx].isoformat()
-            cur_id = cur_id.replace(':', '').replace('.', '')
-            contract_id = contract_id.replace(':', '').replace('.', '')
+            # cur_id = cur_id.replace(':', '').replace('.', '')
+            # contract_id = contract_id.replace(':', '').replace('.', '')
             output_path = f'./wti_output/{data_type}/{contract_id}/{cur_id}.csv.gz'
             try:
                 os.makedirs(f'./wti_output/{data_type}/{contract_id}/', exist_ok=True)

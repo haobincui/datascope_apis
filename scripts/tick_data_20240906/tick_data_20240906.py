@@ -62,7 +62,7 @@ content_fields = {
 }
 
 ### target date:
-query_start_date = date(2019, 1, 1)
+query_start_date = date(2024, 2, 1)
 query_end_date = date(2024, 1, 1)
 
 query_start_dates = [query_start_date]

@@ -24,8 +24,8 @@ tick by tick
 ## Data
 YEAR: 1995 -> Present
 
-- [ ] SP 500 cross section
-- [ ] Oil Futures Brent and WTI
+- [x] SP 500 cross section
+- [x] Oil Futures Brent and WTI
 - [ ] CME futures
 - [ ] S&P 500 index futures
 
@@ -34,16 +34,10 @@ NBBO, equity, time and sales
 
 ## RICs:
 ```
-sp500 index: .
-
-oil futures brent: LCOc1
-WTI: CLc1
-SP500 index: SPc1
-CME futures: ???
+EU oil futures (brent):LCOc1
+US oil futures (WTI): CLc1
+SP500 index futures (ES): SPc1
+Nasdaq index futures (NQ): NQM5
 ```
 
-## Dictionary
-```flow
 
-
-```

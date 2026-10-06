@@ -8,7 +8,7 @@ from src.calendar.schedule import plus_period, Period, TimeUnit, EomConvention
 
 BASE_DIR = os.path.abspath(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
-sys.path.insert(0, '/home/haobin_cui/option_data_processor')
+sys.path.insert(0, '/home/haobin_cui/datascope_apis')
 # sys.path.insert(0, '/Users/haobincui/Documents/option_data_processor')
 
 
